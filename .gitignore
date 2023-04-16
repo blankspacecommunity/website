@@ -1,2 +1,17 @@
+# Folders
+build/
+dist/
+node_modules/
 removed/
 temp/
+
+# Files
+*.log
+*.exe
+*.dll
+*.so
+*.dylib
+.DS_Store
+
+# IDE
+.vscode/
