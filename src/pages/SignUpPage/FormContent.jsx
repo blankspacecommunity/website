@@ -11,7 +11,7 @@ export default function FormContent() {
 
     // do firebase stuff here ig
   };
-
+  // why getting eslint error near labels?
   return (
     <form className="needs-validation" noValidate onSubmit={handleSubmit}>
       <div className="row">
