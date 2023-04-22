@@ -1224,7 +1224,7 @@
           <p class="fs-sm text-light opacity-70 pb-lg-3 mb-4">Proin ipsum pharetra, senectus eget scelerisque varius
             pretium platea velit. Lacus, eget eu vitae nullam proin turpis etiam mi sit. Non feugiat feugiat egestas
             nulla nec. Arcu tempus, eget elementum dolor ullamcorper sodales ultrices eros.</p>
-          <form class="needs-validation" novalidate>
+          <!-- <form class="needs-validation" novalidate>
             <label for="subscr-email" class="form-label">Subscribe to our newsletter</label>
             <div class="input-group">
               <input type="email" id="subscr-email" class="form-control rounded-start ps-5" placeholder="Your email"
@@ -1234,7 +1234,7 @@
               <div class="invalid-tooltip position-absolute top-100 start-0">Please provide a valid email address.</div>
               <button type="submit" class="btn btn-primary">Subscribe</button>
             </div>
-          </form>
+          </form> -->
         </div>
         <div class="col-xl-6 col-lg-7 col-md-5 offset-xl-2 offset-md-1 pt-4 pt-md-1 pt-lg-0">
           <div id="footer-links" class="row">
@@ -1289,10 +1289,12 @@
           </div>
         </div>
       </div>
-      <p class="nav d-block fs-xs text-center text-md-start pb-2 pb-lg-0 mb-0">
-        <span class="text-light opacity-50">&copy; All rights reserved. Made by </span>
-        <a class="nav-link d-inline-block p-0" href="https://createx.studio/" target="_blank" rel="noopener">Createx
-          Studio</a>
+      <p class="nav d-block fs-xs text-center text-xl-start pb-2 mb-0">
+        &copy;
+        <script>
+          document.write(new Date().getFullYear())
+        </script>
+        BlankSpace - All rights reserved
       </p>
     </div>
   </footer>
