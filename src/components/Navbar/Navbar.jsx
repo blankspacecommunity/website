@@ -11,7 +11,7 @@ export default function Navbar() {
         </a>
         <div id="navbarNav" className="offcanvas offcanvas-end">
           <div className="offcanvas-header border-bottom">
-            <h5 className="offcanvas-title">Mesnu</h5>
+            <h5 className="offcanvas-title">Menu</h5>
             <button
               type="button"
               className="btn-close"
