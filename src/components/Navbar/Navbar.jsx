@@ -16,10 +16,10 @@ export default function Navbar() {
               className="btn-close"
               data-bs-dismiss="offcanvas"
               aria-label="Close"
-            ></button>
+            />
           </div>
-          <div class="offcanvas-body">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <div className="offcanvas-body">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item dropdown">
                 <a
                   href="#"
@@ -211,7 +211,7 @@ export default function Navbar() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span className="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon" />
         </button>
       </div>
     </header>
