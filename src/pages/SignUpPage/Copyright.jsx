@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function SignInPage() {
+export default function Copyright() {
   return (
     <>
       <div className="w-100 align-self-end">

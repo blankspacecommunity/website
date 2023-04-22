@@ -1,7 +1,7 @@
 import React from "react";
 import FormHeader from "./FormHeader";
 import FormContent from "./FormContent";
-import Footer from "./Footer";
+import Copyright from "./Copyright";
 
 export default function PageContent() {
   return (
@@ -13,7 +13,7 @@ export default function PageContent() {
         <FormHeader />
         <FormContent />
       </div>
-      <Footer />
+      <Copyright />
     </div>
   );
 }
