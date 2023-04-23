@@ -12,16 +12,17 @@ export default function FormContent() {
     e.preventDefault();
 
     // @AkhilLV please check naming convention
-    const { userObject, errorObject } = await createAccountWithEmailAndPassword(
+    const authResponse = await createAccountWithEmailAndPassword(
       email,
       password
     );
-    if (userObject) {
-      setUser(userObject);
-      console.log(user);
+    if (authResponse.user) {
+      setUser(authResponse.user);
+      console.log("firebase-auth-user:", user);
+      console.log("firebase-auth-user:", authResponse.user);
     }
-    if (errorObject) {
-      console.log(errorObject);
+    if (authResponse.error) {
+      console.log("firebase-auth-sign-up-error:", authResponse.error);
     }
   };
   // why getting eslint error near labels?
