@@ -1,14 +1,15 @@
-// Import the functions you need from the SDKs you need
+// https://firebase.google.com/docs/web/setup#available-libraries
+
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDwETmTdbMwXQMftXpYRGWxffpQ4e3IrWE",
   authDomain: "blankspace-backend.firebaseapp.com",
+  databaseURL:
+    "https://blankspace-backend-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "blankspace-backend",
   storageBucket: "blankspace-backend.appspot.com",
   messagingSenderId: "519387477713",
