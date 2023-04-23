@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { createAccountWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 
 export default function FormContent() {
@@ -7,6 +7,17 @@ export default function FormContent() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [user, setUser] = useState(null);
+
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+
+  const handlePasswordToggle = (e, ref) => {
+    if (ref.current.type === "password") {
+      ref.current.type = "text";
+    } else {
+      ref.current.type = "password";
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,6 +101,7 @@ export default function FormContent() {
               type="password"
               id="password"
               className="form-control form-control-lg"
+              ref={passwordRef}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -98,7 +110,11 @@ export default function FormContent() {
               className="password-toggle-btn"
               aria-label="Show/hide password"
             >
-              <input className="password-toggle-check" type="checkbox" />
+              <input
+                className="password-toggle-check"
+                type="checkbox"
+                onClick={(e) => handlePasswordToggle(e, passwordRef)}
+              />
               <span className="password-toggle-indicator" />
             </label>
             <div className="invalid-feedback position-absolute start-0 top-100">
@@ -115,6 +131,7 @@ export default function FormContent() {
               type="password"
               id="password-confirm"
               className="form-control form-control-lg"
+              ref={confirmPasswordRef}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -123,7 +140,11 @@ export default function FormContent() {
               className="password-toggle-btn"
               aria-label="Show/hide password"
             >
-              <input className="password-toggle-check" type="checkbox" />
+              <input
+                className="password-toggle-check"
+                type="checkbox"
+                onClick={(e) => handlePasswordToggle(e, confirmPasswordRef)}
+              />
               <span className="password-toggle-indicator" />
             </label>
             <div className="invalid-feedback position-absolute start-0 top-100">
