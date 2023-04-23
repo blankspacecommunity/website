@@ -12,7 +12,8 @@ const createAccountWithEmailAndPassword = async (email, password) => {
     return user;
   } catch (error) {
     console.log(error);
-    return error;
+    // return error; ??
+    return null;
   }
 };
 

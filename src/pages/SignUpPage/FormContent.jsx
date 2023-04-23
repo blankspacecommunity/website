@@ -1,15 +1,22 @@
 import React, { useState } from "react";
+import { createAccountWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 
 export default function FormContent() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [user, setUser] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // do firebase stuff here ig
+    const userDetails = await createAccountWithEmailAndPassword(
+      email,
+      password
+    );
+    setUser(userDetails);
+    console.log(user);
   };
   // why getting eslint error near labels?
   return (
