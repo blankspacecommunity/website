@@ -18,11 +18,15 @@ export default function FormContent() {
     );
     if (authResponse.user) {
       setUser(authResponse.user);
-      console.log("firebase-auth-user:", user);
       console.log("firebase-auth-user:", authResponse.user);
     }
     if (authResponse.error) {
       console.log("firebase-auth-sign-up-error:", authResponse.error);
+      console.log("firebase-auth-sign-up-error-code:", authResponse.error.code);
+
+      if (authResponse.error.code === "auth/email-already-in-use") {
+        alert("Email already in use");
+      }
     }
   };
   // why getting eslint error near labels?
