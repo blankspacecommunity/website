@@ -13,6 +13,7 @@ export default function FormContent() {
 
     // @AkhilLV please check naming convention
     const authResponse = await createAccountWithEmailAndPassword(
+      name,
       email,
       password
     );

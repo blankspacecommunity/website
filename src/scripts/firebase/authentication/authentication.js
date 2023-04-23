@@ -2,7 +2,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 // @AkhilLV is it okay to import like this?
 import { auth } from "../config/firebaseConfig.js";
 
-const createAccountWithEmailAndPassword = async (email, password) => {
+const createAccountWithEmailAndPassword = async (name, email, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
