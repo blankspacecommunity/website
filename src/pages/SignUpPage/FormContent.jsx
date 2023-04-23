@@ -11,12 +11,18 @@ export default function FormContent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userDetails = await createAccountWithEmailAndPassword(
+    // @AkhilLV please check naming convention
+    const { userObject, errorObject } = await createAccountWithEmailAndPassword(
       email,
       password
     );
-    setUser(userDetails);
-    console.log(user);
+    if (userObject) {
+      setUser(userObject);
+      console.log(user);
+    }
+    if (errorObject) {
+      console.log(errorObject);
+    }
   };
   // why getting eslint error near labels?
   return (
