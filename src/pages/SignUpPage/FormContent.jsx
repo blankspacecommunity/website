@@ -11,6 +11,17 @@ export default function FormContent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation
+    if (password.length < 6) {
+      alert("Password should be 6 or more characters");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords should match");
+      return;
+    }
+
     // @AkhilLV please check naming convention
     const authResponse = await createAccountWithEmailAndPassword(
       name,
@@ -32,7 +43,7 @@ export default function FormContent() {
   };
   // why getting eslint error near labels?
   return (
-    <form className="needs-validation" noValidate onSubmit={handleSubmit}>
+    <form className="needs-validation" onSubmit={handleSubmit}>
       <div className="row">
         <div className="col-sm-6">
           <div className="position-relative mb-4">
