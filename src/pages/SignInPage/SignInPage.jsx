@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
-import BackgroundImage from "./BackgroundImage";
+import BackgroundImage from "../../components/AuthPageImage/BackgroundImage";
 import PageContent from "./PageContent";
 
 export default function SignInPage() {
