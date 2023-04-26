@@ -8,7 +8,7 @@ export default function SignInPage() {
     <main className="page-wrapper">
       <Navbar />
       <PageContent />
-      <BackgroundImage />
+      <BackgroundImage imageUrl="src/assets/img/account/signin-bg.jpg" />
     </main>
   );
 }
