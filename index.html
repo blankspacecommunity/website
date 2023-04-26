@@ -29,6 +29,17 @@
 
   <!-- Main Theme Styles + Bootstrap -->
   <link rel="stylesheet" media="screen" href="src/assets/css/theme.min.css">
+
+  <!-- Theme -->
+  <script>
+    let mode = window.localStorage.getItem('mode'),
+      root = document.getElementsByTagName('html')[0];
+    if (mode !== null && mode === 'dark') {
+      root.classList.add('dark-mode');
+    } else {
+      root.classList.remove('dark-mode');
+    }
+  </script>
 </head>
 
 <body>
