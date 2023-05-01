@@ -35,7 +35,7 @@ export default function FormContent() {
               aria-label="Show/hide password"
             >
               <input className="password-toggle-check" type="checkbox" />
-              <span className="password-toggle-indicator"></span>
+              <span className="password-toggle-indicator" />
             </label>
             <div className="invalid-feedback position-absolute start-0 top-100">
               Please enter your password!

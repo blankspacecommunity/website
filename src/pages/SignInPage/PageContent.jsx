@@ -12,7 +12,7 @@ export default function PageContent() {
       >
         <h1 className="text-center text-xl-start">Welcome Back</h1>
         <p className="text-center text-xl-start pb-3 mb-3">
-          Don’t have an account yet? <Link to="/signup">Sign in here.</Link>
+          Don't have an account yet? <Link to="/signup">Sign up here.</Link>
         </p>
 
         <FormContent />
