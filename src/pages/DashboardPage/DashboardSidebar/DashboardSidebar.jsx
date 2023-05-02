@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 export default function DashboardSidebar() {
   return (
@@ -38,62 +39,35 @@ export default function DashboardSidebar() {
             id="account-menu"
             className="list-group list-group-flush collapse d-md-block"
           >
-            <a
+            <NavLink
               href="account-details.html"
-              className="list-group-item list-group-item-action d-flex align-items-center active"
+              className="list-group-item list-group-item-action d-flex align-items-center"
+              to="/dashboard/profile"
             >
               <i className="bx bx-cog fs-xl opacity-60 me-2" />
-              Accountt Details
-            </a>
-            <a
-              href="account-security.html"
+              Profile Information
+            </NavLink>
+            <NavLink
+              to="/dashboard/projects"
               className="list-group-item list-group-item-action d-flex align-items-center"
             >
               <i className="bx bx-lock-alt fs-xl opacity-60 me-2" />
-              Security
-            </a>
-            <a
-              href="account-notifications.html"
+              Your projects
+            </NavLink>
+            <NavLink
+              to="/dashboard/NOTDONEYET"
               className="list-group-item list-group-item-action d-flex align-items-center"
             >
               <i className="bx bx-bell fs-xl opacity-60 me-2" />
-              Notifications
-            </a>
-            <a
-              href="account-messages.html"
-              className="list-group-item list-group-item-action d-flex align-items-center"
-            >
-              <i className="bx bx-chat fs-xl opacity-60 me-2" />
-              Messages
-            </a>
-            <a
-              href="account-saved-items.html"
-              className="list-group-item list-group-item-action d-flex align-items-center"
-            >
-              <i className="bx bx-bookmark fs-xl opacity-60 me-2" />
-              Saved Items
-            </a>
-            <a
-              href="account-collections.html"
-              className="list-group-item list-group-item-action d-flex align-items-center"
-            >
-              <i className="bx bx-collection fs-xl opacity-60 me-2" />
-              My Collections
-            </a>
-            <a
-              href="account-payment.html"
-              className="list-group-item list-group-item-action d-flex align-items-center"
-            >
-              <i className="bx bx-credit-card-front fs-xl opacity-60 me-2" />
-              Payment Details
-            </a>
-            <a
-              href="account-signin.html"
+              All projects
+            </NavLink>
+            <NavLink
+              to="/signin"
               className="list-group-item list-group-item-action d-flex align-items-center"
             >
               <i className="bx bx-log-out fs-xl opacity-60 me-2" />
               Sign Out
-            </a>
+            </NavLink>
           </div>
         </div>
       </div>

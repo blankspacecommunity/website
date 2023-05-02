@@ -1,57 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BlankSpace</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>BlankSpace</title>
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="BlankSpace" />
 
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <meta name="author" content="BlankSpace">
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Viewport -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon and Touch Icons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="src/src/assets/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="src/src/assets/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="src/src/assets/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="src/src/assets/favicon/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="src/src/assets/favicon/safari-pinned-tab.svg"
+      color="#6366f1"
+    />
+    <link rel="shortcut icon" href="src/src/assets/favicon/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#080032" />
+    <meta
+      name="msapplication-config"
+      content="src/src/assets/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
 
-  <!-- Favicon and Touch Icons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="src/src/assets/favicon/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="src/src/assets/favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="src/src/assets/favicon/favicon-16x16.png">
-  <link rel="manifest" href="src/src/assets/favicon/site.webmanifest">
-  <link rel="mask-icon" href="src/src/assets/favicon/safari-pinned-tab.svg" color="#6366f1">
-  <link rel="shortcut icon" href="src/src/assets/favicon/favicon.ico">
-  <meta name="msapplication-TileColor" content="#080032">
-  <meta name="msapplication-config" content="src/src/assets/favicon/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
+    <!-- Vendor Styles -->
+    <link
+      rel="stylesheet"
+      media="screen"
+      href="src/assets/vendor/boxicons/css/boxicons.min.css"
+    />
 
-  <!-- Vendor Styles -->
-  <link rel="stylesheet" media="screen" href="src/assets/vendor/boxicons/css/boxicons.min.css" />
+    <!-- Theme -->
+    <script>
+      let mode = window.localStorage.getItem("mode"),
+        root = document.getElementsByTagName("html")[0];
+      if (mode !== null && mode === "dark") {
+        root.classList.add("dark-mode");
+      } else {
+        root.classList.remove("dark-mode");
+      }
+    </script>
+  </head>
 
-  <!-- Main Theme Styles + Bootstrap -->
-  <link rel="stylesheet" media="screen" href="src/assets/css/theme.min.css">
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 
-  <!-- Theme -->
-  <script>
-    let mode = window.localStorage.getItem('mode'),
-      root = document.getElementsByTagName('html')[0];
-    if (mode !== null && mode === 'dark') {
-      root.classList.add('dark-mode');
-    } else {
-      root.classList.remove('dark-mode');
-    }
-  </script>
-</head>
+    <!-- Vendor Scripts -->
+    <script src="src/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="src/assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
-
-  <!-- Vendor Scripts -->
-  <script src="src/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="src/assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
-
-  <!-- Main Theme Script -->
-  <script src="src/assets/js/theme.min.js"></script>
-</body>
-
+    <!-- Main Theme Script -->
+    <script src="src/assets/js/theme.min.js"></script>
+  </body>
 </html>
