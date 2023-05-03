@@ -41,7 +41,8 @@ export default function FormContent() {
       toastData = {
         title: "Invalid username",
         code: "",
-        message: "Username can only contain letters, numbers and underscores.",
+        message:
+          "Username must be under 15 characters and can only contain letters, numbers and underscores.",
         delay: 6000,
         position: "top-end",
       };
@@ -84,15 +85,80 @@ export default function FormContent() {
     );
     if (authResponse.user) {
       setUser(authResponse.user);
-      console.log("firebase-auth-user:", authResponse.user);
-      alert("Account created successfully");
+
+      // @AkhilLV route user to dashboard
     }
     if (authResponse.error) {
-      console.log(authResponse.error.code);
-      if (authResponse.error.code === "auth/email-already-in-use") {
-        alert("Email already in use");
+      if (authResponse.error.code === "auth/username-already-exists") {
+        toastData = {
+          title: "Username already exists",
+          code: "",
+          message: "The username you entered is already taken.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/email-already-in-use") {
+        toastData = {
+          title: "Email already in use",
+          code: "",
+          message: "The email address is already in use by another account.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/invalid-email") {
+        toastData = {
+          title: "Invalid email",
+          code: "",
+          message: "The email you entered is invalid.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/too-many-requests") {
+        toastData = {
+          title: "Too many requests",
+          code: "",
+          message:
+            "We found too many requests from your device. Try after sometime.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/operation-not-allowed") {
+        toastData = {
+          title: "Operation not allowed",
+          code: "",
+          message: "You are not allowed to perform this operation.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/weak-password") {
+        toastData = {
+          title: "Weak password",
+          code: "",
+          message:
+            "Your password is too weak. Please choose a strong password.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/network-request-failed") {
+        toastData = {
+          title: "Network error",
+          code: "",
+          message: "Please check your internet connection.",
+          delay: 6000,
+          position: "top-end",
+        };
       } else {
-        alert("hello");
+        toastData = {
+          title: "Something went wrong",
+          code: "",
+          message: `Please contact support with error code: ${authResponse.error.code}`,
+          delay: 20000,
+          position: "top-end",
+        };
+      }
+      if (Object.keys(toastData).length > 0) {
+        setToastContent(toastData);
+        setShowToast(true);
       }
     }
   };
