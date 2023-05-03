@@ -1,7 +1,19 @@
 import React, { useState } from "react";
+import { ToastContainer } from "react-bootstrap";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Toast from "react-bootstrap/Toast";
 import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 
 export default function FormContent() {
+  const [showToast, setShowToast] = useState(false);
+  const [toastContent, setToastContent] = useState({
+    title: "",
+    code: "",
+    message: "",
+    delay: 0,
+    position: "top-end",
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,14 +25,25 @@ export default function FormContent() {
       console.log("firebase-auth-user:", authResponse.user);
     }
     if (authResponse.error) {
-      console.log("firebase-auth-sign-in-error:", authResponse.error);
-      console.log("firebase-auth-sign-in-error-code:", authResponse.error.code);
-
       if (authResponse.error.code === "auth/user-not-found") {
-        alert("User not found");
+        setToastContent({
+          title: "User not found",
+          code: "",
+          message: "We couldn't find an account with that email address.",
+          delay: 6000,
+          position: "top-end",
+        });
       } else if (authResponse.error.code === "auth/wrong-password") {
-        alert("Wrong password");
+        setToastContent({
+          title: "Wrong password",
+          code: "",
+          message: "The password you entered is incorrect.",
+          delay: 6000,
+          position: "top-end",
+        });
       }
+
+      setShowToast(true);
     }
   };
 
@@ -76,6 +99,30 @@ export default function FormContent() {
       <a href="account-signin.html#" className="btn btn-link btn-lg w-100">
         Forgot your password?
       </a>
+      <Row>
+        <Col xs={6}>
+          <ToastContainer position="top-end" className="p-3">
+            <Toast
+              onClose={() => setShowToast(false)}
+              show={showToast}
+              delay={toastContent.delay}
+              position={toastContent.position}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">{toastContent.title}</strong>
+                <small>{toastContent.code}</small>
+              </Toast.Header>
+              <Toast.Body>{toastContent.message}</Toast.Body>
+            </Toast>
+          </ToastContainer>
+        </Col>
+      </Row>
     </>
   );
 }
