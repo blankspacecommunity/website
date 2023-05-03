@@ -4,6 +4,7 @@ import { createAccountWithEmailAndPassword } from "../../scripts/firebase/authen
 export default function FormContent() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -89,6 +90,24 @@ export default function FormContent() {
             />
             <div className="invalid-feedback position-absolute start-0 top-100">
               Please enter a valid email address!
+            </div>
+          </div>
+        </div>
+        <div className="col-12 mb-4">
+          <div className="position-relative mb-4">
+            <label htmlFor="username" className="form-label fs-base">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="form-control form-control-lg"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback position-absolute start-0 top-100">
+              Please enter your username!
             </div>
           </div>
         </div>
