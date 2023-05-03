@@ -34,22 +34,23 @@ export default function FormContent() {
       return;
     }
 
-    // @AkhilLV please check naming convention
     const authResponse = await createAccountWithEmailAndPassword(
       name,
       email,
+      username,
       password
     );
     if (authResponse.user) {
       setUser(authResponse.user);
       console.log("firebase-auth-user:", authResponse.user);
+      alert("Account created successfully");
     }
     if (authResponse.error) {
-      console.log("firebase-auth-sign-up-error:", authResponse.error);
-      console.log("firebase-auth-sign-up-error-code:", authResponse.error.code);
-
+      console.log(authResponse.error.code);
       if (authResponse.error.code === "auth/email-already-in-use") {
         alert("Email already in use");
+      } else {
+        alert("hello");
       }
     }
   };
