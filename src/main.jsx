@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./scripts/firebase/config/firebaseConfig";
 import App from "./App";
 
 import "./assets/css/theme.min.css";
@@ -11,6 +13,20 @@ import Error404 from "./pages/Error404/Error404";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import Profile from "./pages/DashboardPage/ProfileSection/Profile";
 import Projects from "./pages/DashboardPage/ProjectsSection/Projects";
+
+/*
+ * This function is called when the authentication state changes.
+ */
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in
+    console.log("User is signed in");
+  } else {
+    // User is signed out
+    console.log("User is signed out");
+  }
+});
 
 const router = createBrowserRouter([
   {
