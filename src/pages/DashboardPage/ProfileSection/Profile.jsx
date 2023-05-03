@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function Profile() {
+  const map = {
+    "B.Tech": [
+      "Computer Science",
+      "Information Technology",
+      "Civil Engineering",
+      "Mechanical Engineering",
+      "Electrical Engineering",
+    ],
+    "M.Tech": ["Material Science", "Data Science"],
+    "BCA/MCA": ["Integrated BCA + MCA", "MCA Only"],
+  };
+
+  const [selectedDegree, setSelectedDegree] = useState("B.Tech");
+
   return (
     <div className="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
       <div className="ps-md-3 ps-lg-0 mt-md-2 py-md-4">
@@ -86,6 +100,25 @@ export default function Profile() {
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="state" className="form-label fs-base">
+                Degree name
+              </label>
+              <select
+                id="state"
+                className="form-select form-select-lg"
+                required
+                onChange={(e) => setSelectedDegree(e.target.value)}
+              >
+                <option value="" disabled>
+                  Choose degree
+                </option>
+                <option value="B.Tech">B.Tech</option>
+                <option value="M.Tech">M.Tech</option>
+                <option value="BCA/MCA">BCA/MCA</option>
+              </select>
+              <div className="invalid-feedback">Please choose your degree!</div>
+            </div>
+            <div className="col-sm-6 mb-4">
+              <label htmlFor="state" className="form-label fs-base">
                 Course/Program
               </label>
               <select
@@ -96,10 +129,9 @@ export default function Profile() {
                 <option value="" disabled>
                   Choose course/program
                 </option>
-                <option value="Arizona">Computer Science</option>
-                <option value="California">Information Technonlogy</option>
-                <option value="Iowa">Electrical Engineering</option>
-                <option value="Florida">Civil Engineering</option>
+                {map[selectedDegree].map((course) => (
+                  <option value="BCA/MCA">{course}</option>
+                ))}
               </select>
               <div className="invalid-feedback">Please choose your state!</div>
             </div>
