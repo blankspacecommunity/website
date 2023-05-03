@@ -1,8 +1,9 @@
+/* eslint-disable no-useless-catch */
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { ref, set } from "firebase/database";
+import { ref, set, get, child } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
 
 /*
@@ -27,26 +28,46 @@ const signInUserWithEmailAndPassword = async (email, password) => {
  * CREATE ACCOUNT
  * Create a new user account with email and password, and add user details to Realtime Database.
  */
-const createAccountWithEmailAndPassword = async (name, email, password) => {
+const createAccountWithEmailAndPassword = async (
+  name,
+  email,
+  username,
+  password
+) => {
   try {
+    const usernamesRef = ref(database, "user-usernames");
+    const snapshot = await get(child(usernamesRef, username));
+
+    if (snapshot.exists()) {
+      const error = new Error("Username already exists");
+      error.code = "auth/username-already-exists";
+      throw error;
+    }
+
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
-
     const { user } = userCredential;
-    const userData = {
+
+    // add user details to the database, including the username
+    await set(child(ref(database), `users/${user.uid}`), {
       name,
       email,
-    };
-    // Add user details to Realtime Database
-    await set(ref(database, `users/${user.uid}`), userData);
+      username,
+    });
 
+    // add the username to the database separately
+    await set(child(usernamesRef, username), user.uid);
     return { user, error: null };
   } catch (error) {
     return { user: null, error };
   }
 };
 
-export { createAccountWithEmailAndPassword, signInUserWithEmailAndPassword };
+export {
+  createAccountWithEmailAndPassword,
+  signInUserWithEmailAndPassword,
+  signOut,
+};
