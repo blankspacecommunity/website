@@ -25,25 +25,29 @@ export default function FormContent() {
       console.log("firebase-auth-user:", authResponse.user);
     }
     if (authResponse.error) {
+      let toastData = {};
       if (authResponse.error.code === "auth/user-not-found") {
-        setToastContent({
+        toastData = {
           title: "User not found",
           code: "",
           message: "We couldn't find an account with that email address.",
           delay: 6000,
           position: "top-end",
-        });
+        };
       } else if (authResponse.error.code === "auth/wrong-password") {
-        setToastContent({
+        toastData = {
           title: "Wrong password",
           code: "",
           message: "The password you entered is incorrect.",
           delay: 6000,
           position: "top-end",
-        });
+        };
       }
 
-      setShowToast(true);
+      if (Object.keys(toastData).length > 0) {
+        setToastContent(toastData);
+        setShowToast(true);
+      }
     }
   };
 
