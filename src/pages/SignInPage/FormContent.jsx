@@ -1,10 +1,123 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { ToastContainer } from "react-bootstrap";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Toast from "react-bootstrap/Toast";
+import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 
 export default function FormContent() {
+  const [showToast, setShowToast] = useState(false);
+  const [toastContent, setToastContent] = useState({
+    title: "",
+    code: "",
+    message: "",
+    delay: 0,
+    position: "top-end",
+  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let toastData = {};
+
+    if (email.includes("@bsemail.web.app") || email.includes(".ajce.in")) {
+      const authResponse = await signInUserWithEmailAndPassword(
+        email,
+        password
+      );
+      if (authResponse.user) {
+        console.log("firebase-auth-user:", authResponse.user);
+      }
+      if (authResponse.error) {
+        if (authResponse.error.code === "auth/user-not-found") {
+          toastData = {
+            title: "User not found",
+            code: "",
+            message: "We couldn't find an account with that email address.",
+            delay: 6000,
+            position: "top-end",
+          };
+        } else if (authResponse.error.code === "auth/wrong-password") {
+          toastData = {
+            title: "Wrong password",
+            code: "",
+            message: "The password you entered is incorrect.",
+            delay: 6000,
+            position: "top-end",
+          };
+        } else if (authResponse.error.code === "auth/invalid-email") {
+          toastData = {
+            title: "Invalid email",
+            code: "",
+            message: "The email you entered is invalid.",
+            delay: 6000,
+            position: "top-end",
+          };
+        } else if (authResponse.error.code === "auth/too-many-requests") {
+          toastData = {
+            title: "Too many requests",
+            code: "",
+            message: "Exceeded quota for email and password sign-in requests.",
+            delay: 6000,
+            position: "top-end",
+          };
+        } else if (authResponse.error.code === "auth/user-disabled") {
+          toastData = {
+            title: "Account disabled",
+            code: "",
+            message: "The account has been disabled by an administrator.",
+            delay: 6000,
+            position: "top-end",
+          };
+        } else if (authResponse.error.code === "auth/invalid-credential") {
+          toastData = {
+            title: "Invalid credential",
+            code: "",
+            message: "The credential is malformed or has expired.",
+            delay: 6000,
+            position: "top-end",
+          };
+        } else if (authResponse.error.code === "auth/network-request-failed") {
+          toastData = {
+            title: "Network error",
+            code: "",
+            message: "Please check your internet connection.",
+            delay: 6000,
+            position: "top-end",
+          };
+        } else {
+          toastData = {
+            title: "Something went wrong",
+            code: "",
+            message: `Please contact support with error code: ${authResponse.error.code}`,
+            delay: 20000,
+            position: "top-end",
+          };
+        }
+        if (Object.keys(toastData).length > 0) {
+          setToastContent(toastData);
+          setShowToast(true);
+        }
+      }
+    } else {
+      toastData = {
+        title: "Invalid email",
+        code: "",
+        message: "Please enter a valid email address provided by your college.",
+        delay: 6000,
+        position: "top-end",
+      };
+      if (Object.keys(toastData).length > 0) {
+        setToastContent(toastData);
+        setShowToast(true);
+      }
+    }
+  };
+
   return (
     <>
-      <form className="needs-validation mb-2" noValidate>
+      <form className="needs-validation mb-2" onSubmit={handleSubmit}>
         <div className="position-relative mb-4">
           <label htmlFor="email" className="form-label fs-base">
             Email
@@ -13,6 +126,7 @@ export default function FormContent() {
             type="email"
             id="email"
             className="form-control form-control-lg"
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <div className="invalid-feedback position-absolute start-0 top-100">
@@ -28,6 +142,7 @@ export default function FormContent() {
               type="password"
               id="password"
               className="form-control form-control-lg"
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <label
@@ -42,14 +157,6 @@ export default function FormContent() {
             </div>
           </div>
         </div>
-        <div className="mb-4">
-          <div className="form-check">
-            <input type="checkbox" id="remember" className="form-check-input" />
-            <label htmlFor="remember" className="form-check-label fs-base">
-              Remember me
-            </label>
-          </div>
-        </div>
         <button
           type="submit"
           className="btn btn-primary shadow-primary btn-lg w-100"
@@ -60,6 +167,30 @@ export default function FormContent() {
       <a href="account-signin.html#" className="btn btn-link btn-lg w-100">
         Forgot your password?
       </a>
+      <Row>
+        <Col xs={6}>
+          <ToastContainer position="top-end" className="p-3">
+            <Toast
+              onClose={() => setShowToast(false)}
+              show={showToast}
+              delay={toastContent.delay}
+              position={toastContent.position}
+              autohide
+            >
+              <Toast.Header>
+                <img
+                  src="holder.js/20x20?text=%20"
+                  className="rounded me-2"
+                  alt=""
+                />
+                <strong className="me-auto">{toastContent.title}</strong>
+                <small>{toastContent.code}</small>
+              </Toast.Header>
+              <Toast.Body>{toastContent.message}</Toast.Body>
+            </Toast>
+          </ToastContainer>
+        </Col>
+      </Row>
     </>
   );
 }
