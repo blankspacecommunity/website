@@ -34,15 +34,45 @@ export default function FormContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let toastData = {};
+    const regex = /^[a-z0-9_]{1,15}$/;
 
-    // Validation
+    if (!regex.test(username)) {
+      toastData = {
+        title: "Invalid username",
+        code: "",
+        message: "Username can only contain letters, numbers and underscores.",
+        delay: 6000,
+        position: "top-end",
+      };
+      setToastContent(toastData);
+      setShowToast(true);
+      return;
+    }
+
     if (password.length < 6) {
-      alert("Password should be 6 or more characters");
+      toastData = {
+        title: "Password too short",
+        code: "",
+        message: "Password should be 6 or more characters.",
+        delay: 6000,
+        position: "top-end",
+      };
+      setToastContent(toastData);
+      setShowToast(true);
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("Passwords should match");
+      toastData = {
+        title: "Passwords don't match",
+        code: "",
+        message: "Please check your passwords again.",
+        delay: 6000,
+        position: "top-end",
+      };
+      setToastContent(toastData);
+      setShowToast(true);
       return;
     }
 
