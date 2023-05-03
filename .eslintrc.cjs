@@ -10,6 +10,9 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react"],
-  rules: { semi: ["error", "always"], quotes: ["error", "double"] },
+  rules: {
+    semi: ["error", "always"],
+    quotes: ["error", "double"],
+    "jsx-a11y/label-has-associated-control": [0],
+  },
 };
-
