@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 
 export default function FormContent() {
   const [email, setEmail] = useState("");
@@ -6,6 +7,21 @@ export default function FormContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const authResponse = await signInUserWithEmailAndPassword(email, password);
+    if (authResponse.user) {
+      console.log("firebase-auth-user:", authResponse.user);
+    }
+    if (authResponse.error) {
+      console.log("firebase-auth-sign-in-error:", authResponse.error);
+      console.log("firebase-auth-sign-in-error-code:", authResponse.error.code);
+
+      if (authResponse.error.code === "auth/user-not-found") {
+        alert("User not found");
+      } else if (authResponse.error.code === "auth/wrong-password") {
+        alert("Wrong password");
+      }
+    }
   };
 
   return (
