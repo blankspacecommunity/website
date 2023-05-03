@@ -7,6 +7,19 @@ import { ref, set, get, child } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
 
 /*
+ * SIGN OUR USER
+ * Sign out the current user.
+ */
+
+const signOut = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    throw error;
+  }
+};
+
+/*
  * SIGN IN
  * Sign in with email and password.
  */
