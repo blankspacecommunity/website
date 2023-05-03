@@ -52,7 +52,6 @@ export default function FormContent() {
       }
     }
   };
-  // why getting eslint error near labels?
   return (
     <form className="needs-validation" onSubmit={handleSubmit}>
       <div className="row">
