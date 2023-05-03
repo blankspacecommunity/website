@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Toast from "react-bootstrap/Toast";
 import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
+import { AuthErrorCodes } from "firebase/auth";
 
 export default function FormContent() {
   const [showToast, setShowToast] = useState(false);
@@ -40,6 +41,54 @@ export default function FormContent() {
           code: "",
           message: "The password you entered is incorrect.",
           delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/invalid-email") {
+        toastData = {
+          title: "Invalid email",
+          code: "",
+          message: "The email you entered is invalid.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/too-many-requests") {
+        toastData = {
+          title: "Too many requests",
+          code: "",
+          message: "Exceeded quota for email and password sign-in requests.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/user-disabled") {
+        toastData = {
+          title: "Account disabled",
+          code: "",
+          message: "The account has been disabled by an administrator.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/invalid-credential") {
+        toastData = {
+          title: "Invalid credential",
+          code: "",
+          message: "The credential is malformed or has expired.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else if (authResponse.error.code === "auth/network-request-failed") {
+        toastData = {
+          title: "Network error",
+          code: "",
+          message: "Please check your internet connection.",
+          delay: 6000,
+          position: "top-end",
+        };
+      } else {
+        toastData = {
+          title: "Something went wrong",
+          code: "",
+          message: `Please contact support with error code: ${authResponse.error.code}`,
+          delay: 20000,
           position: "top-end",
         };
       }
