@@ -1,8 +1,32 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { ref, set } from "firebase/database";
-// @AkhilLV is it okay to import like this?
-import { auth, database } from "../config/firebaseConfig.js";
+import { auth, database } from "../config/firebaseConfig";
 
+/*
+ * SIGN IN
+ * Sign in with email and password.
+ */
+
+const signInUserWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    return { user: userCredential.user, error: null };
+  } catch (error) {
+    return { user: null, error };
+  }
+};
+
+/*
+ * CREATE ACCOUNT
+ * Create a new user account with email and password, and add user details to Realtime Database.
+ */
 const createAccountWithEmailAndPassword = async (name, email, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -10,20 +34,19 @@ const createAccountWithEmailAndPassword = async (name, email, password) => {
       email,
       password
     );
-    // Add user details to Realtime Database
+
     const { user } = userCredential;
     const userData = {
       name,
       email,
     };
+    // Add user details to Realtime Database
     await set(ref(database, `users/${user.uid}`), userData);
 
-    // Return user data if everything is successful
     return { user, error: null };
   } catch (error) {
     return { user: null, error };
   }
 };
 
-// @AkhilLV why getting error in this line?
-export { createAccountWithEmailAndPassword };
+export { createAccountWithEmailAndPassword, signInUserWithEmailAndPassword };
