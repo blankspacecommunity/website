@@ -1,10 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 
 export default function FormContent() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  };
+
   return (
     <>
-      <form className="needs-validation mb-2" noValidate>
+      <form className="needs-validation mb-2" onSubmit={handleSubmit}>
         <div className="position-relative mb-4">
           <label htmlFor="email" className="form-label fs-base">
             Email
@@ -13,6 +19,7 @@ export default function FormContent() {
             type="email"
             id="email"
             className="form-control form-control-lg"
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <div className="invalid-feedback position-absolute start-0 top-100">
@@ -28,6 +35,7 @@ export default function FormContent() {
               type="password"
               id="password"
               className="form-control form-control-lg"
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <label
@@ -40,14 +48,6 @@ export default function FormContent() {
             <div className="invalid-feedback position-absolute start-0 top-100">
               Please enter your password!
             </div>
-          </div>
-        </div>
-        <div className="mb-4">
-          <div className="form-check">
-            <input type="checkbox" id="remember" className="form-check-input" />
-            <label htmlFor="remember" className="form-check-label fs-base">
-              Remember me
-            </label>
           </div>
         </div>
         <button
