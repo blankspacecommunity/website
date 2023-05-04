@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 import ToastModal from "../../components/ToastModal/ToastModal";
 
-import parseError from "./parseError";
+import parseError from "../../helpers/parseError";
 
 export default function FormContent() {
   const [showToast, setShowToast] = useState(false);

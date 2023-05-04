@@ -2,66 +2,79 @@ const knownErrors = {
   // client errors
   "client/not-college-mail": {
     title: "Invalid email",
-    code: "",
     message: "Please enter a valid email address provided by your college.",
-    delay: 6000,
-    position: "top-end",
+  },
+  "client/invalid-username": {
+    title: "Invalid username",
+    message:
+      "Username must be under 15 characters and can only contain letters, numbers and underscores.",
+  },
+  "client/password-too-short": {
+    title: "Password too short",
+    message: "Password should be 6 or more characters.",
+  },
+  "client/passwords-dont-match": {
+    title: "Passwords don't match",
+    message: "Please check your passwords again.",
   },
 
   // Firebase errors
+  "auth/weak-password": {
+    title: "Weak password",
+    message: "Your password is too weak. Please choose a strong password.",
+  },
+
+  "auth/operation-not-allowed": {
+    title: "Operation not allowed",
+    message: "You are not allowed to perform this operation.",
+  },
+
+  "auth/email-already-in-use": {
+    title: "Email already in use",
+    message: "The email address is already in use by another account.",
+  },
+
+  "auth/username-already-exists": {
+    title: "Username already exists",
+    message: "The username you entered is already taken.",
+  },
+
   "auth/user-not-found": {
     title: "User not found",
-    code: "",
     message: "We couldn't find an account with that email address.",
-    delay: 6000,
-    position: "top-end",
   },
   "auth/wrong-password": {
     title: "Wrong password",
-    code: "",
     message: "The password you entered is incorrect.",
-    delay: 6000,
-    position: "top-end",
   },
   "auth/invalid-email": {
     title: "Invalid email",
-    code: "",
     message: "The email you entered is invalid.",
-    delay: 6000,
-    position: "top-end",
   },
   "auth/too-many-requests": {
     title: "Too many requests",
-    code: "",
     message: "Exceeded quota for email and password sign-in requests.",
-    delay: 6000,
-    position: "top-end",
   },
   "auth/user-disabled": {
     title: "Account disabled",
-    code: "",
     message: "The account has been disabled by an administrator.",
-    delay: 6000,
-    position: "top-end",
   },
   "auth/invalid-credential": {
     title: "Invalid credential",
-    code: "",
     message: "The credential is malformed or has expired.",
-    delay: 6000,
-    position: "top-end",
   },
   "auth/network-request-failed": {
     title: "Network error",
-    code: "",
     message: "Please check your internet connection.",
-    delay: 6000,
-    position: "top-end",
   },
 };
 
 const parseError = (errorCode) => {
   if (knownErrors[errorCode]) {
+    knownErrors[errorCode].delay = 6000;
+    knownErrors[errorCode].position = "top-end";
+    knownErrors[errorCode].code = ""; // what is this even for
+
     return knownErrors[errorCode];
   }
 

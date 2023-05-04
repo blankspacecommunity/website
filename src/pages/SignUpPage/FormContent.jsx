@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
-import { ToastContainer } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Toast from "react-bootstrap/Toast";
 import { createAccountWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
+import ToastModal from "../../components/ToastModal/ToastModal";
+import parseError from "../../helpers/parseError";
 
 export default function FormContent() {
   const [showToast, setShowToast] = useState(false);
@@ -14,6 +14,7 @@ export default function FormContent() {
     delay: 0,
     position: "top-end",
   });
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -35,43 +36,27 @@ export default function FormContent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let toastData = {};
-    const regex = /^[a-z0-9_]{1,15}$/;
+
+    const regex = /^[a-z0-9_]{1,15}$/; // UNDER 15 characters, can only contain letters, numbers and underscores
 
     if (!regex.test(username)) {
-      toastData = {
-        title: "Invalid username",
-        code: "",
-        message:
-          "Username must be under 15 characters and can only contain letters, numbers and underscores.",
-        delay: 6000,
-        position: "top-end",
-      };
+      toastData = parseError("client/invalid-username");
+
       setToastContent(toastData);
       setShowToast(true);
       return;
     }
 
     if (password.length < 6) {
-      toastData = {
-        title: "Password too short",
-        code: "",
-        message: "Password should be 6 or more characters.",
-        delay: 6000,
-        position: "top-end",
-      };
+      toastData = parseError("client/password-too-short");
       setToastContent(toastData);
       setShowToast(true);
       return;
     }
 
     if (password !== confirmPassword) {
-      toastData = {
-        title: "Passwords don't match",
-        code: "",
-        message: "Please check your passwords again.",
-        delay: 6000,
-        position: "top-end",
-      };
+      toastData = parseError("client/passwords-dont-match");
+
       setToastContent(toastData);
       setShowToast(true);
       return;
@@ -89,77 +74,10 @@ export default function FormContent() {
       // @AkhilLV route user to dashboard
     }
     if (authResponse.error) {
-      if (authResponse.error.code === "auth/username-already-exists") {
-        toastData = {
-          title: "Username already exists",
-          code: "",
-          message: "The username you entered is already taken.",
-          delay: 6000,
-          position: "top-end",
-        };
-      } else if (authResponse.error.code === "auth/email-already-in-use") {
-        toastData = {
-          title: "Email already in use",
-          code: "",
-          message: "The email address is already in use by another account.",
-          delay: 6000,
-          position: "top-end",
-        };
-      } else if (authResponse.error.code === "auth/invalid-email") {
-        toastData = {
-          title: "Invalid email",
-          code: "",
-          message: "The email you entered is invalid.",
-          delay: 6000,
-          position: "top-end",
-        };
-      } else if (authResponse.error.code === "auth/too-many-requests") {
-        toastData = {
-          title: "Too many requests",
-          code: "",
-          message:
-            "We found too many requests from your device. Try after sometime.",
-          delay: 6000,
-          position: "top-end",
-        };
-      } else if (authResponse.error.code === "auth/operation-not-allowed") {
-        toastData = {
-          title: "Operation not allowed",
-          code: "",
-          message: "You are not allowed to perform this operation.",
-          delay: 6000,
-          position: "top-end",
-        };
-      } else if (authResponse.error.code === "auth/weak-password") {
-        toastData = {
-          title: "Weak password",
-          code: "",
-          message:
-            "Your password is too weak. Please choose a strong password.",
-          delay: 6000,
-          position: "top-end",
-        };
-      } else if (authResponse.error.code === "auth/network-request-failed") {
-        toastData = {
-          title: "Network error",
-          code: "",
-          message: "Please check your internet connection.",
-          delay: 6000,
-          position: "top-end",
-        };
-      } else {
-        toastData = {
-          title: "Something went wrong",
-          code: "",
-          message: `Please contact support with error code: ${authResponse.error.code}`,
-          delay: 20000,
-          position: "top-end",
-        };
-      }
-      if (Object.keys(toastData).length > 0) {
-        setToastContent(toastData);
-        setShowToast(true);
-      }
+      toastData = parseError(authResponse.error.code);
+
+      setToastContent(toastData);
+      setShowToast(true);
     }
   };
   return (
@@ -290,26 +208,11 @@ export default function FormContent() {
       </form>
       <Row>
         <Col xs={6}>
-          <ToastContainer position="top-end" className="p-3">
-            <Toast
-              onClose={() => setShowToast(false)}
-              show={showToast}
-              delay={toastContent.delay}
-              position={toastContent.position}
-              autohide
-            >
-              <Toast.Header>
-                <img
-                  src="holder.js/20x20?text=%20"
-                  className="rounded me-2"
-                  alt=""
-                />
-                <strong className="me-auto">{toastContent.title}</strong>
-                <small>{toastContent.code}</small>
-              </Toast.Header>
-              <Toast.Body>{toastContent.message}</Toast.Body>
-            </Toast>
-          </ToastContainer>
+          <ToastModal
+            showToast={showToast}
+            setShowToast={setShowToast}
+            toastContent={toastContent}
+          />
         </Col>
       </Row>
     </>
