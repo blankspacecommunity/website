@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import { useNavigate } from "react-router-dom";
 import { createAccountWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 import ToastModal from "../../components/ToastModal/ToastModal";
 import parseError from "../../helpers/parseError";
@@ -14,6 +15,8 @@ export default function FormContent() {
     delay: 0,
     position: "top-end",
   });
+
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -37,7 +40,17 @@ export default function FormContent() {
     e.preventDefault();
     let toastData = {};
 
-    const regex = /^[a-z0-9_]{1,15}$/; // UNDER 15 characters, can only contain letters, numbers and underscores
+    // UNDER 15 characters, can only contain letters, numbers and underscores
+    // /i is for allowing both upper and lower chars
+    const regex = /^[a-z0-9_]{1,15}$/i;
+
+    if (!(email.includes("@bsemail.web.app") || email.includes(".ajce.in"))) {
+      toastData = parseError("client/not-college-mail");
+
+      setToastContent(toastData);
+      setShowToast(true);
+      return;
+    }
 
     if (!regex.test(username)) {
       toastData = parseError("client/invalid-username");
@@ -68,11 +81,12 @@ export default function FormContent() {
       username,
       password
     );
+
     if (authResponse.user) {
       setUser(authResponse.user);
-
-      // @AkhilLV route user to dashboard
+      navigate("/dashboard");
     }
+
     if (authResponse.error) {
       toastData = parseError(authResponse.error.code);
 
