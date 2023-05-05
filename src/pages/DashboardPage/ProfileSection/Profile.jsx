@@ -13,7 +13,19 @@ export default function Profile() {
     "BCA/MCA": ["Integrated BCA + MCA", "MCA Only"],
   };
 
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [bio, setBio] = useState("");
+
+  const [yearOfAdmission, setYearOfAdmission] = useState(2023);
   const [selectedDegree, setSelectedDegree] = useState("B.Tech");
+  const [course, setCourse] = useState("Computer Science");
+  const [residentialStatus, setResidentialStatus] = useState("Hosteller");
+
+  const [linkedIn, setLinkedIn] = useState("");
+  const [github, setGithub] = useState("");
+  const [discord, setDiscord] = useState("");
+  const [twitter, setTwitter] = useState("");
 
   return (
     <div className="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
@@ -31,6 +43,8 @@ export default function Profile() {
                 Full name
               </label>
               <input
+                onChange={(e) => setFullName(e.target.value)}
+                value={fullName}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
@@ -46,6 +60,8 @@ export default function Profile() {
                 <small className="text-muted">(preferrably whatsapp)</small>
               </label>
               <input
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={phoneNumber}
                 type="text"
                 id="phone"
                 className="form-control form-control-lg"
@@ -61,6 +77,8 @@ export default function Profile() {
                 </small>
               </label>
               <textarea
+                onChange={(e) => setBio(e.target.value)}
+                value={bio}
                 id="bio"
                 className="form-control form-control-lg"
                 rows="4"
@@ -84,6 +102,8 @@ export default function Profile() {
                 id="country"
                 className="form-select form-select-lg"
                 required
+                onChange={(e) => setYearOfAdmission(e.target.value)}
+                value={yearOfAdmission}
               >
                 <option value="" disabled>
                   Choose country
@@ -125,6 +145,8 @@ export default function Profile() {
                 id="state"
                 className="form-select form-select-lg"
                 required
+                onChange={(e) => setCourse(e.target.value)}
+                value={course}
               >
                 <option value="" disabled>
                   Choose course/program
@@ -139,7 +161,13 @@ export default function Profile() {
               <label htmlFor="city" className="form-label fs-base">
                 Residential Status
               </label>
-              <select id="city" className="form-select form-select-lg" required>
+              <select
+                id="city"
+                className="form-select form-select-lg"
+                required
+                onChange={(e) => setResidentialStatus(e.target.value)}
+                value={residentialStatus}
+              >
                 <option value="" disabled>
                   Choose Residential Status
                 </option>
@@ -162,6 +190,8 @@ export default function Profile() {
                 LinkedIn
               </label>
               <input
+                onChange={(e) => setLinkedIn(e.target.value)}
+                value={linkedIn}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
@@ -176,6 +206,8 @@ export default function Profile() {
                 Discord
               </label>
               <input
+                onChange={(e) => setDiscord(e.target.value)}
+                value={discord}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
@@ -191,6 +223,8 @@ export default function Profile() {
               </label>
               <input
                 type="text"
+                onChange={(e) => setGithub(e.target.value)}
+                value={github}
                 id="fn"
                 className="form-control form-control-lg"
                 required
@@ -204,6 +238,8 @@ export default function Profile() {
                 Twitter
               </label>
               <input
+                onChange={(e) => setTwitter(e.target.value)}
+                value={twitter}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
