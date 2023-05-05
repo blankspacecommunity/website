@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import { useNavigate } from "react-router-dom";
 import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 import ToastModal from "../../components/ToastModal/ToastModal";
 
-import parseError from "./parseError";
+import parseError from "../../helpers/parseError";
 
 export default function FormContent() {
   const [showToast, setShowToast] = useState(false);
@@ -15,6 +16,8 @@ export default function FormContent() {
     delay: 0,
     position: "top-end",
   });
+
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,14 +37,12 @@ export default function FormContent() {
     const authResponse = await signInUserWithEmailAndPassword(email, password);
 
     if (authResponse.user) {
-      console.log("firebase-auth-user:", authResponse.user);
+      navigate("/dashboard");
     }
 
     if (authResponse.error) {
       toastData = parseError(authResponse.error.code);
-    }
 
-    if (Object.keys(toastData).length > 0) {
       setToastContent(toastData);
       setShowToast(true);
     }
