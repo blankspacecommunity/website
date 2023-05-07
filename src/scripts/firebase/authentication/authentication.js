@@ -59,10 +59,18 @@ const createAccountWithEmailAndPassword = async (
 
     const userCredential = await createUserWithEmailAndPassword(
       auth,
+      {
+        displayName: name,
+      },
       email,
       password
     );
     const { user } = userCredential;
+    try {
+      await user.updateProfile({ username });
+    } catch (error) {
+      throw error;
+    }
 
     // add user details to the database, including the username
     await set(child(ref(database), `users/${user.uid}`), {
