@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 import ToastModal from "../../components/ToastModal/ToastModal";
 
@@ -97,9 +97,11 @@ export default function FormContent() {
           Sign in
         </button>
       </form>
-      <a href="account-signin.html#" className="btn btn-link btn-lg w-100">
-        Forgot your password?
-      </a>
+
+      <Link to="/resetpassword" className="btn btn-link btn-lg w-100">
+        Forgot password?
+      </Link>
+
       <Row>
         <Col xs={6}>
           <ToastModal
