@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getUserProfileDetails } from "../../../scripts/firebase/database/database";
 import { auth } from "../../../scripts/firebase/config/firebaseConfig";
-
+/* 
+  auth.currentUser is an object that contains the following properties:
+  displayName, email, emailVerified, phoneNumber, photoURL, uid, providerData
+*/
 export default function Profile() {
   const map = {
     "B.Tech": [
@@ -43,7 +46,6 @@ export default function Profile() {
   const [github, setGithub] = useState("");
   const [discord, setDiscord] = useState("");
   const [twitter, setTwitter] = useState("");
-  const [userDetails, setUserDetails] = useState(null);
 
   return (
     <div className="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">

@@ -22,7 +22,7 @@ import Projects from "./pages/DashboardPage/ProjectsSection/Projects";
 onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in
-    console.log("User is signed in");
+    console.log("User is signed in", user);
   } else {
     // User is signed out
     console.log("User is signed out");
