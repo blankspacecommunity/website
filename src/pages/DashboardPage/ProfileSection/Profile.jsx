@@ -3,14 +3,29 @@ import React, { useState } from "react";
 export default function Profile() {
   const map = {
     "B.Tech": [
-      "Computer Science",
-      "Information Technology",
+      "Chemical Engineering",
       "Civil Engineering",
+      "Computer Science and Engineering",
+      "Electronics and Communication Engineering",
+      "Electrical and Electronics Engineering",
+      "Food Technology",
+      "Information Technology",
       "Mechanical Engineering",
-      "Electrical Engineering",
+      "Mechanical Engineering (Automobile)",
+      "	Metallurgical & Materials Engineering",
     ],
-    "M.Tech": ["Material Science", "Data Science"],
-    "BCA/MCA": ["Integrated BCA + MCA", "MCA Only"],
+    "M.Tech": [
+      "Computer- Aided Structural Engineering",
+      "Structural Engineering & Construction Management",
+      "Communication Engineering",
+      "Computer Science and Engineering",
+      "Energy Systems",
+      "Power Electronics & Power Systems",
+      "Machine Design",
+      "Nano Technology",
+      "Environmental Engineering",
+    ],
+    "BCA/MCA": ["MCA (2 years)", "MCA Integrated (5 years)"],
   };
 
   const [fullName, setFullName] = useState("");
@@ -20,7 +35,7 @@ export default function Profile() {
   const [yearOfAdmission, setYearOfAdmission] = useState(2023);
   const [selectedDegree, setSelectedDegree] = useState("B.Tech");
   const [course, setCourse] = useState("Computer Science");
-  const [residentialStatus, setResidentialStatus] = useState("Hosteller");
+  const [residentialStatus, setResidentialStatus] = useState("Hosteler");
 
   const [linkedIn, setLinkedIn] = useState("");
   const [github, setGithub] = useState("");
@@ -51,13 +66,13 @@ export default function Profile() {
                 required
               />
               <div className="invalid-feedback">
-                Please enter your first name!
+                Please enter your full name!
               </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="phone" className="form-label fs-base">
                 Phone{" "}
-                <small className="text-muted">(preferrably whatsapp)</small>
+                <small className="text-muted">(preferably whatsapp 💚)</small>
               </label>
               <input
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -66,14 +81,14 @@ export default function Profile() {
                 id="phone"
                 className="form-control form-control-lg"
                 data-format='{"numericOnly": true, "delimiters": ["+1 ", " ", " "], "blocks": [0, 3, 3, 2]}'
-                placeholder="+1 ___ ___ __"
+                placeholder=""
               />
             </div>
             <div className="col-12 mb-4">
               <label htmlFor="bio" className="form-label fs-base">
                 Bio{" "}
                 <small className="text-muted">
-                  (optional, feel free to boast here ;))
+                  (optional, feel free to boast here 😉)
                 </small>
               </label>
               <textarea
@@ -82,7 +97,7 @@ export default function Profile() {
                 id="bio"
                 className="form-control form-control-lg"
                 rows="4"
-                placeholder="Add a short bio..."
+                placeholder="Add a shooooort bio..."
               />
             </div>
           </div>
@@ -106,7 +121,7 @@ export default function Profile() {
                 value={yearOfAdmission}
               >
                 <option value="" disabled>
-                  Choose country
+                  Choose year
                 </option>
                 <option value="2023">2023</option>
                 <option value="2022">2022</option>
@@ -114,9 +129,6 @@ export default function Profile() {
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
               </select>
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="state" className="form-label fs-base">
@@ -135,7 +147,6 @@ export default function Profile() {
                 <option value="M.Tech">M.Tech</option>
                 <option value="BCA/MCA">BCA/MCA</option>
               </select>
-              <div className="invalid-feedback">Please choose your degree!</div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="state" className="form-label fs-base">
@@ -151,11 +162,10 @@ export default function Profile() {
                 <option value="" disabled>
                   Choose course/program
                 </option>
-                {map[selectedDegree].map((course) => (
-                  <option value="BCA/MCA">{course}</option>
+                {map[selectedDegree].map((courseOption) => (
+                  <option value="BCA/MCA">{courseOption}</option>
                 ))}
               </select>
-              <div className="invalid-feedback">Please choose your state!</div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="city" className="form-label fs-base">
@@ -171,15 +181,19 @@ export default function Profile() {
                 <option value="" disabled>
                   Choose Residential Status
                 </option>
-                <option value="Boston">Hosteller</option>
+                <option value="Boston">Hosteler</option>
                 <option value="Chicago">Day Scholar</option>
               </select>
-              <div className="invalid-feedback">Please choose your city!</div>
             </div>
           </div>
         </form>
 
         <h2 className="h5 text-primary pt-1 pt-lg-3 my-4">Social Links</h2>
+        <p>
+          Are you tired of being a social media outcast? Fear not, adding your
+          GitHub account to your profile is the first step towards social
+          acceptance! Trust us, it&apos;s worth it.{" "}
+        </p>
         <form
           className="needs-validation border-bottom pb-2 pb-lg-4"
           noValidate
@@ -197,9 +211,6 @@ export default function Profile() {
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="fn" className="form-label fs-base">
@@ -213,9 +224,6 @@ export default function Profile() {
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="fn" className="form-label fs-base">
@@ -229,9 +237,6 @@ export default function Profile() {
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="fn" className="form-label fs-base">
@@ -245,9 +250,6 @@ export default function Profile() {
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
           </div>
         </form>
