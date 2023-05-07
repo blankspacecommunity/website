@@ -6,6 +6,7 @@ import { auth } from "./scripts/firebase/config/firebaseConfig";
 import App from "./App";
 
 import "./assets/css/theme.min.css";
+import "./assets/vendor/boxicons/css/boxicons.min.css"; // CSS for icons
 
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignInPage from "./pages/SignInPage/SignInPage";
