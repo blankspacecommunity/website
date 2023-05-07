@@ -1,10 +1,12 @@
 import { React, useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { auth } from "../../../scripts/firebase/config/firebaseConfig";
+import { signOutUser } from "../../../scripts/firebase/authentication/authentication";
 
 export default function DashboardSidebar() {
   const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -72,13 +74,17 @@ export default function DashboardSidebar() {
               <i className="bx bx-bell fs-xl opacity-60 me-2" />
               All projects
             </NavLink>
-            <NavLink
-              to="/signin"
+            <button
+              type="button"
+              onClick={async () => {
+                const response = await signOutUser();
+                if (!response.error) navigate("/signin");
+              }}
               className="list-group-item list-group-item-action d-flex align-items-center"
             >
               <i className="bx bx-log-out fs-xl opacity-60 me-2" />
               Sign Out
-            </NavLink>
+            </button>
           </div>
         </div>
       </div>

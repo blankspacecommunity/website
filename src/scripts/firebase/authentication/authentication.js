@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 import { ref, set, get, child } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
@@ -12,11 +13,18 @@ import { auth, database } from "../config/firebaseConfig";
  * Sign out the current user.
  */
 
-const signOut = async () => {
+const signOutUser = async () => {
   try {
-    await signOut(auth);
+    const user = auth.currentUser;
+    if (user) {
+      console.log("signing out the user ", user.displayName);
+      await signOut(auth);
+      console.log(user.displayName, " is now signed out");
+      return { error: null };
+    }
+    return new Error("No user signed in");
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -95,5 +103,5 @@ const createAccountWithEmailAndPassword = async (
 export {
   createAccountWithEmailAndPassword,
   signInUserWithEmailAndPassword,
-  signOut,
+  signOutUser,
 };
