@@ -73,7 +73,7 @@ const parseError = (errorCode) => {
   if (knownErrors[errorCode]) {
     knownErrors[errorCode].delay = 6000;
     knownErrors[errorCode].position = "top-end";
-    knownErrors[errorCode].code = ""; // what is this even for
+    knownErrors[errorCode].code = ""; // what is this even for [reply: Idk, it was actually time in the original code]
 
     return knownErrors[errorCode];
   }
