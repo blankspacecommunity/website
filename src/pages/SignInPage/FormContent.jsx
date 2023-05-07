@@ -20,9 +20,11 @@ export default function FormContent() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     let toastData = {};
 
     if (!(email.includes("@bsemail.web.app") || email.includes(".ajce.in"))) {
@@ -30,7 +32,7 @@ export default function FormContent() {
 
       setToastContent(toastData);
       setShowToast(true);
-
+      setIsLoading(false);
       return;
     }
 
@@ -45,6 +47,7 @@ export default function FormContent() {
 
       setToastContent(toastData);
       setShowToast(true);
+      setIsLoading(false);
     }
   };
 
@@ -93,6 +96,7 @@ export default function FormContent() {
         <button
           type="submit"
           className="btn btn-primary shadow-primary btn-lg w-100"
+          disabled={isLoading}
         >
           Sign in
         </button>
