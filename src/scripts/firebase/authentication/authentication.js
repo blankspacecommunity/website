@@ -67,11 +67,10 @@ const createAccountWithEmailAndPassword = async (
     );
     const { user } = userCredential;
 
-    // update the user profile with the name and username
+    // update the user profile with the display name
     try {
       await updateProfile(user, {
         displayName: name,
-        username,
       });
     } catch (error) {
       console.log(error);
