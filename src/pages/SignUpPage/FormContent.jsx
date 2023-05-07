@@ -23,6 +23,7 @@ export default function FormContent() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
   const passwordRef = useRef(null);
@@ -38,6 +39,7 @@ export default function FormContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     let toastData = {};
 
     // UNDER 15 characters, can only contain letters, numbers and underscores
@@ -49,6 +51,7 @@ export default function FormContent() {
 
       setToastContent(toastData);
       setShowToast(true);
+      setIsLoading(false);
       return;
     }
 
@@ -57,6 +60,7 @@ export default function FormContent() {
 
       setToastContent(toastData);
       setShowToast(true);
+      setIsLoading(false);
       return;
     }
 
@@ -64,6 +68,7 @@ export default function FormContent() {
       toastData = parseError("client/password-too-short");
       setToastContent(toastData);
       setShowToast(true);
+      setIsLoading(false);
       return;
     }
 
@@ -72,6 +77,7 @@ export default function FormContent() {
 
       setToastContent(toastData);
       setShowToast(true);
+      setIsLoading(false);
       return;
     }
 
@@ -92,6 +98,7 @@ export default function FormContent() {
 
       setToastContent(toastData);
       setShowToast(true);
+      setIsLoading(false);
     }
   };
   return (
@@ -216,6 +223,7 @@ export default function FormContent() {
         <button
           type="submit"
           className="btn btn-primary shadow-primary btn-lg w-100"
+          disabled={isLoading}
         >
           Sign up
         </button>
