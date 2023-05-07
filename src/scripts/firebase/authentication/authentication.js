@@ -2,6 +2,7 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { ref, set, get, child } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
@@ -48,6 +49,7 @@ const createAccountWithEmailAndPassword = async (
   password
 ) => {
   try {
+    // get usernames and check if the username already exists otherwise throw an error
     const usernamesRef = ref(database, "user-usernames");
     const snapshot = await get(child(usernamesRef, username));
 
@@ -57,18 +59,22 @@ const createAccountWithEmailAndPassword = async (
       throw error;
     }
 
+    // if username doesn't exist, create the user account
     const userCredential = await createUserWithEmailAndPassword(
       auth,
-      {
-        displayName: name,
-      },
       email,
       password
     );
     const { user } = userCredential;
+
+    // update the user profile with the name and username
     try {
-      await user.updateProfile({ username });
+      await updateProfile(user, {
+        displayName: name,
+        username,
+      });
     } catch (error) {
+      console.log(error);
       throw error;
     }
 

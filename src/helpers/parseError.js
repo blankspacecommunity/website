@@ -81,7 +81,7 @@ const parseError = (errorCode) => {
   return {
     title: "Something went wrong",
     code: "",
-    message: `Please contact support with error code: ${errorCode}`,
+    message: "Please contact support our support team.",
     delay: 20000,
     position: "top-end",
   };
