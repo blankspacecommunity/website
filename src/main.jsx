@@ -15,6 +15,7 @@ import Error404 from "./pages/Error404/Error404";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import Profile from "./pages/DashboardPage/ProfileSection/Profile";
 import Projects from "./pages/DashboardPage/ProjectsSection/Projects";
+import AddProjectPage from "./pages/AddProjectPage/AddProjectPage";
 
 /*
  * This function is called when the authentication state changes.
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
         element: <Projects />,
       },
     ],
+  },
+  {
+    path: "/projects/new",
+    element: <AddProjectPage />,
   },
   {
     path: "*",
