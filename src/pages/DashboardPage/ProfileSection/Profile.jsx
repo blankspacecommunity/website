@@ -1,19 +1,51 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { getUserProfileDetails } from "../../../scripts/firebase/database/database";
+import { auth } from "../../../scripts/firebase/config/firebaseConfig";
+/* 
+  auth.currentUser is an object that contains the following properties:
+  displayName, email, emailVerified, phoneNumber, photoURL, uid, providerData
+*/
 export default function Profile() {
   const map = {
     "B.Tech": [
-      "Computer Science",
-      "Information Technology",
+      "Chemical Engineering",
       "Civil Engineering",
+      "Computer Science and Engineering",
+      "Electronics and Communication Engineering",
+      "Electrical and Electronics Engineering",
+      "Food Technology",
+      "Information Technology",
       "Mechanical Engineering",
-      "Electrical Engineering",
+      "Mechanical Engineering (Automobile)",
+      "	Metallurgical & Materials Engineering",
     ],
-    "M.Tech": ["Material Science", "Data Science"],
-    "BCA/MCA": ["Integrated BCA + MCA", "MCA Only"],
+    "M.Tech": [
+      "Computer- Aided Structural Engineering",
+      "Structural Engineering & Construction Management",
+      "Communication Engineering",
+      "Computer Science and Engineering",
+      "Energy Systems",
+      "Power Electronics & Power Systems",
+      "Machine Design",
+      "Nano Technology",
+      "Environmental Engineering",
+    ],
+    "BCA/MCA": ["MCA (2 years)", "MCA Integrated (5 years)"],
   };
 
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [bio, setBio] = useState("");
+
+  const [yearOfAdmission, setYearOfAdmission] = useState(2023);
   const [selectedDegree, setSelectedDegree] = useState("B.Tech");
+  const [course, setCourse] = useState("Computer Science");
+  const [residentialStatus, setResidentialStatus] = useState("Hosteler");
+
+  const [linkedIn, setLinkedIn] = useState("");
+  const [github, setGithub] = useState("");
+  const [discord, setDiscord] = useState("");
+  const [twitter, setTwitter] = useState("");
 
   return (
     <div className="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
@@ -31,40 +63,46 @@ export default function Profile() {
                 Full name
               </label>
               <input
+                onChange={(e) => setFullName(e.target.value)}
+                value={fullName}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
                 required
               />
               <div className="invalid-feedback">
-                Please enter your first name!
+                Please enter your full name!
               </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="phone" className="form-label fs-base">
                 Phone{" "}
-                <small className="text-muted">(preferrably whatsapp)</small>
+                <small className="text-muted">(preferably whatsapp 💚)</small>
               </label>
               <input
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={phoneNumber}
                 type="text"
                 id="phone"
                 className="form-control form-control-lg"
                 data-format='{"numericOnly": true, "delimiters": ["+1 ", " ", " "], "blocks": [0, 3, 3, 2]}'
-                placeholder="+1 ___ ___ __"
+                placeholder=""
               />
             </div>
             <div className="col-12 mb-4">
               <label htmlFor="bio" className="form-label fs-base">
                 Bio{" "}
                 <small className="text-muted">
-                  (optional, feel free to boast here ;))
+                  (optional, feel free to boast here 😉)
                 </small>
               </label>
               <textarea
+                onChange={(e) => setBio(e.target.value)}
+                value={bio}
                 id="bio"
                 className="form-control form-control-lg"
                 rows="4"
-                placeholder="Add a short bio..."
+                placeholder="Add a shooooort bio..."
               />
             </div>
           </div>
@@ -84,9 +122,11 @@ export default function Profile() {
                 id="country"
                 className="form-select form-select-lg"
                 required
+                onChange={(e) => setYearOfAdmission(e.target.value)}
+                value={yearOfAdmission}
               >
                 <option value="" disabled>
-                  Choose country
+                  Choose year
                 </option>
                 <option value="2023">2023</option>
                 <option value="2022">2022</option>
@@ -94,9 +134,6 @@ export default function Profile() {
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
               </select>
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="state" className="form-label fs-base">
@@ -115,7 +152,6 @@ export default function Profile() {
                 <option value="M.Tech">M.Tech</option>
                 <option value="BCA/MCA">BCA/MCA</option>
               </select>
-              <div className="invalid-feedback">Please choose your degree!</div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="state" className="form-label fs-base">
@@ -125,33 +161,44 @@ export default function Profile() {
                 id="state"
                 className="form-select form-select-lg"
                 required
+                onChange={(e) => setCourse(e.target.value)}
+                value={course}
               >
                 <option value="" disabled>
                   Choose course/program
                 </option>
-                {map[selectedDegree].map((course) => (
-                  <option value="BCA/MCA">{course}</option>
+                {map[selectedDegree].map((courseOption) => (
+                  <option value="BCA/MCA">{courseOption}</option>
                 ))}
               </select>
-              <div className="invalid-feedback">Please choose your state!</div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="city" className="form-label fs-base">
                 Residential Status
               </label>
-              <select id="city" className="form-select form-select-lg" required>
+              <select
+                id="city"
+                className="form-select form-select-lg"
+                required
+                onChange={(e) => setResidentialStatus(e.target.value)}
+                value={residentialStatus}
+              >
                 <option value="" disabled>
                   Choose Residential Status
                 </option>
-                <option value="Boston">Hosteller</option>
+                <option value="Boston">Hosteler</option>
                 <option value="Chicago">Day Scholar</option>
               </select>
-              <div className="invalid-feedback">Please choose your city!</div>
             </div>
           </div>
         </form>
 
         <h2 className="h5 text-primary pt-1 pt-lg-3 my-4">Social Links</h2>
+        <p>
+          Are you tired of being a social media outcast? Fear not, adding your
+          GitHub account to your profile is the first step towards social
+          acceptance! Trust us, it&apos;s worth it.{" "}
+        </p>
         <form
           className="needs-validation border-bottom pb-2 pb-lg-4"
           noValidate
@@ -162,28 +209,26 @@ export default function Profile() {
                 LinkedIn
               </label>
               <input
+                onChange={(e) => setLinkedIn(e.target.value)}
+                value={linkedIn}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="fn" className="form-label fs-base">
                 Discord
               </label>
               <input
+                onChange={(e) => setDiscord(e.target.value)}
+                value={discord}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="fn" className="form-label fs-base">
@@ -191,27 +236,25 @@ export default function Profile() {
               </label>
               <input
                 type="text"
+                onChange={(e) => setGithub(e.target.value)}
+                value={github}
                 id="fn"
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="fn" className="form-label fs-base">
                 Twitter
               </label>
               <input
+                onChange={(e) => setTwitter(e.target.value)}
+                value={twitter}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please choose your country!
-              </div>
             </div>
           </div>
         </form>

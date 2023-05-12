@@ -1,29 +1,107 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ref, set } from "firebase/database";
-// @AkhilLV is it okay to import like this?
-import { auth, database } from "../config/firebaseConfig.js";
+/* eslint-disable no-useless-catch */
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  signOut,
+} from "firebase/auth";
+import { ref, set, get, child } from "firebase/database";
+import { auth, database } from "../config/firebaseConfig";
 
-const createAccountWithEmailAndPassword = async (name, email, password) => {
+/*
+ * SIGN OUR USER
+ * Sign out the current user.
+ */
+
+const signOutUser = async () => {
   try {
+    const user = auth.currentUser;
+    if (user) {
+      console.log("signing out the user ", user.displayName);
+      await signOut(auth);
+      console.log(user.displayName, " is now signed out");
+      return { error: null };
+    }
+    return new Error("No user signed in");
+  } catch (error) {
+    return error;
+  }
+};
+
+/*
+ * SIGN IN
+ * Sign in with email and password.
+ */
+
+const signInUserWithEmailAndPassword = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    return { user: userCredential.user, error: null };
+  } catch (error) {
+    return { user: null, error };
+  }
+};
+
+/*
+ * CREATE ACCOUNT
+ * Create a new user account with email and password, and add user details to Realtime Database.
+ */
+const createAccountWithEmailAndPassword = async (
+  name,
+  email,
+  username,
+  password
+) => {
+  try {
+    // get usernames and check if the username already exists otherwise throw an error
+    const usernamesRef = ref(database, "user-usernames");
+    const snapshot = await get(child(usernamesRef, username));
+
+    if (snapshot.exists()) {
+      const error = new Error("Username already exists");
+      error.code = "auth/username-already-exists";
+      throw error;
+    }
+
+    // if username doesn't exist, create the user account
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
-    // Add user details to Realtime Database
     const { user } = userCredential;
-    const userData = {
+
+    // update the user profile with the display name
+    try {
+      await updateProfile(user, {
+        displayName: name,
+      });
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+
+    // add user details to the database, including the username
+    await set(child(ref(database), `users/${user.uid}`), {
       name,
       email,
-    };
-    await set(ref(database, `users/${user.uid}`), userData);
+      username,
+    });
 
-    // Return user data if everything is successful
+    // add the username to the database separately
+    await set(child(usernamesRef, username), user.uid);
     return { user, error: null };
   } catch (error) {
     return { user: null, error };
   }
 };
 
-// @AkhilLV why getting error in this line?
-export { createAccountWithEmailAndPassword };
+export {
+  createAccountWithEmailAndPassword,
+  signInUserWithEmailAndPassword,
+  signOutUser,
+};

@@ -1,7 +1,20 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { auth } from "../../../scripts/firebase/config/firebaseConfig";
+import { signOutUser } from "../../../scripts/firebase/authentication/authentication";
 
 export default function DashboardSidebar() {
+  const [username, setUsername] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      setUsername(user.displayName);
+      setUserEmail(user.email);
+    }
+  }, []);
   return (
     <aside className="col-lg-3 col-md-4 border-end pb-5 mt-n5">
       <div className="position-sticky top-0">
@@ -23,8 +36,8 @@ export default function DashboardSidebar() {
               <i className="bx bx-refresh" />
             </button>
           </div>
-          <h2 className="h5 mb-1">John Doe</h2>
-          <p className="mb-3 pb-3">jonny@email.com</p>
+          <h2 className="h5 mb-1">{username || "error :("}</h2>
+          <p className="mb-3 pb-3">{userEmail || "error :("}</p>
           <button
             type="button"
             className="btn btn-secondary w-100 d-md-none mt-n2 mb-3"
@@ -61,13 +74,17 @@ export default function DashboardSidebar() {
               <i className="bx bx-bell fs-xl opacity-60 me-2" />
               All projects
             </NavLink>
-            <NavLink
-              to="/signin"
+            <button
+              type="button"
+              onClick={async () => {
+                const response = await signOutUser();
+                if (!response.error) navigate("/signin");
+              }}
               className="list-group-item list-group-item-action d-flex align-items-center"
             >
               <i className="bx bx-log-out fs-xl opacity-60 me-2" />
               Sign Out
-            </NavLink>
+            </button>
           </div>
         </div>
       </div>
