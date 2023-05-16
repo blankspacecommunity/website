@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import ToastModal from "../../components/ToastModal/ToastModal";
 import parseError from "../../helpers/parseError";
 
+import { resetPassword } from "../../scripts/firebase/authentication/authentication";
+
 export default function FormContent() {
   const [showToast, setShowToast] = useState(false);
   const [toastContent, setToastContent] = useState({
@@ -17,9 +19,11 @@ export default function FormContent() {
 
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     let toastData = {};
 
     if (!(email.includes("@bsemail.web.app") || email.includes(".ajce.in"))) {
@@ -27,20 +31,22 @@ export default function FormContent() {
 
       setToastContent(toastData);
       setShowToast(true);
-
+      setIsLoading(false);
       return;
     }
 
-    // if (authResponse.user) {
-    //   navigate("/dashboard");
-    // }
+    const authResponse = await resetPassword(email);
 
-    // if (authResponse.error) {
-    //   toastData = parseError(authResponse.error.code);
+    if (authResponse.error) {
+      toastData = parseError(authResponse.error.code);
 
-    //   setToastContent(toastData);
-    //   setShowToast(true);
-    // }
+      setToastContent(toastData);
+      setShowToast(true);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+      navigate("/signin?password-reset=true");
+    }
   };
 
   return (
@@ -61,6 +67,7 @@ export default function FormContent() {
         <button
           type="submit"
           className="btn btn-primary shadow-primary btn-lg w-100"
+          disabled={isLoading}
         >
           Reset Password
         </button>
