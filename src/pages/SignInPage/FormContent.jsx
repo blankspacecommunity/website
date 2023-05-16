@@ -24,9 +24,12 @@ export default function FormContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // disable button while loading
     setIsLoading(true);
     let toastData = {};
 
+    // check if email is college email
     if (!(email.includes("@bsemail.web.app") || email.includes(".ajce.in"))) {
       toastData = parseError("client/not-college-mail");
 
@@ -36,12 +39,15 @@ export default function FormContent() {
       return;
     }
 
+    // if college email, try to sign in
     const authResponse = await signInUserWithEmailAndPassword(email, password);
 
+    // if sign in successful, redirect to dashboard
     if (authResponse.user) {
       navigate("/dashboard");
     }
 
+    // if sign in failed, show error
     if (authResponse.error) {
       toastData = parseError(authResponse.error.code);
 

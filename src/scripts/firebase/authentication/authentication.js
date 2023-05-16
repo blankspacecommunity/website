@@ -65,6 +65,7 @@ const signInUserWithEmailAndPassword = async (email, password) => {
  * CREATE ACCOUNT
  * Create a new user account with email and password, and add user details to Realtime Database.
  */
+
 const createAccountWithEmailAndPassword = async (
   name,
   email,
