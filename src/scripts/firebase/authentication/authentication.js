@@ -4,12 +4,27 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
   signOut,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { ref, set, get, child } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
 
 /*
- * SIGN OUR USER
+ * RESET PASSWORD
+ * Send a password reset email to the user.
+ */
+
+const resetPassword = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    return { error: null };
+  } catch (error) {
+    return { error };
+  }
+};
+
+/*
+ * SIGN OUT USER
  * Sign out the current user.
  */
 
@@ -104,4 +119,5 @@ export {
   createAccountWithEmailAndPassword,
   signInUserWithEmailAndPassword,
   signOutUser,
+  resetPassword,
 };
