@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 import ToastModal from "../../components/ToastModal/ToastModal";
 
@@ -21,6 +21,26 @@ export default function FormContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const passwordResetFromUrl = searchParams.get("password-reset");
+  const [passwordReset, setPasswordReset] = useState(false);
+
+  useEffect(() => {
+    setPasswordReset(passwordResetFromUrl === "true");
+    if (passwordReset === true) {
+      setToastContent({
+        title: "Password reset successful!",
+        code: "",
+        message:
+          "An email with instructions on how to set a new password has been sent to your registered email address. Please check your inbox and follow the instructions provided before signing in.",
+        delay: 10000,
+        position: "top-end",
+      });
+      setShowToast(true);
+    }
+  }, [passwordResetFromUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,7 +121,6 @@ export default function FormContent() {
           Sign in
         </button>
       </form>
-
       <Link to="/resetpassword" className="btn btn-link btn-lg w-100">
         Forgot password?
       </Link>
