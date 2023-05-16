@@ -19,6 +19,19 @@ const knownErrors = {
   },
 
   // Firebase errors
+  "auth/requires-recent-login": {
+    title: "Requires recent login",
+    message:
+      "Log out and log back in to perform this action, if not working please contact support.",
+  },
+  "auth/invalid-action-code": {
+    title: "Invalid action code",
+    message: "The action code is invalid. Please try again.",
+  },
+  "auth/expired-action-code": {
+    title: "Expired action code",
+    message: "The action code has expired. Please try again.",
+  },
   "auth/weak-password": {
     title: "Weak password",
     message: "Your password is too weak. Please choose a strong password.",
