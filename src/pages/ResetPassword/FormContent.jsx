@@ -23,23 +23,25 @@ export default function FormContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // disable button while loading
     setIsLoading(true);
     let toastData = {};
 
+    // check if email is college email
     if (!(email.includes("@bsemail.web.app") || email.includes(".ajce.in"))) {
       toastData = parseError("client/not-college-mail");
-
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
       return;
     }
 
+    // if college email, try to send reset password link
     const authResponse = await resetPassword(email);
 
     if (authResponse.error) {
       toastData = parseError(authResponse.error.code);
-
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
