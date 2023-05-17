@@ -25,11 +25,9 @@ export default function FormContent() {
   const searchParams = new URLSearchParams(location.search);
 
   const passwordResetFromUrl = searchParams.get("password-reset");
-  const [passwordReset, setPasswordReset] = useState(false);
 
   useEffect(() => {
-    setPasswordReset(passwordResetFromUrl === "true");
-    if (passwordReset === true) {
+    if (passwordResetFromUrl === "true") {
       setToastContent({
         title: "Password reset successful!",
         code: "",
