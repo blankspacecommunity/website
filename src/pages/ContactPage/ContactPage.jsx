@@ -6,7 +6,7 @@ import PageContent from "./PageContent";
 export default function ContactPage() {
   return (
     <main className="page-wrapper">
-      <Navbar blackBackground />
+      <Navbar />
       <PageContent />
       <Footer />
     </main>
