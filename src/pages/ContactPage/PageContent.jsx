@@ -1,7 +1,33 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function PageContent() {
+  const faqItems = [
+    {
+      question: "What is blankspace?",
+      answer:
+        "Blankspace is a community that helps people learn, grow, and connect. Whether you're a beginner or an experienced professional, Blankspace has something to offer you.",
+    },
+    {
+      question: "Why should I join Blankspace?",
+      answer:
+        "Blankspace is a community that connects people, projects, and opportunities. We create a network between colleagues, explore many projects, expose community members outside the community, and schedule several events and programs to help you achieve your goals.",
+    },
+    {
+      question: "Is it free to join Blankspace?",
+      answer:
+        "Yes, it is absolutely free to join Blankspace! By becoming a member of our vibrant community, you'll gain access to an abundance of valuable resources, exciting collaboration opportunities, and a nurturing environment where like-minded individuals are ready to support you every step of the way. Join our free community today and unlock a world of benefits awaiting you!",
+    },
+    {
+      question: "What are the benefits of joining Blankspace?",
+      answer:
+        "Our community is a great place to learn and grow your programming skills. We offer a variety of resources and opportunities for members to learn, including access to a community of experienced programmers and the opportunity to work on real-world open source projects. We also host regular quizzes and competitions to help members test their knowledge and skills.",
+    },
+    {
+      question: "Can I use my personal Gmail to create an account?",
+      answer:
+        "We are currently only accepting college email addresses for registration. This is to ensure that our community is made up of genuine students who are interested in learning and growing. We will be updating our policies on email verification soon, and we will announce the changes here on our website. In the meantime, if you are a student and you do not have a college email address, please contact us and we will be happy to help you create an account. We hope you understand and we look forward to seeing you in our community!",
+    },
+  ];
   return (
     <>
       <section
@@ -15,7 +41,8 @@ export default function PageContent() {
             <ol className="breadcrumb mb-0">
               <li className="breadcrumb-item">
                 <a href="index.html">
-                  <i className="bx bx-home-alt fs-lg me-1"></i>Home
+                  <i className="bx bx-home-alt fs-lg me-1" />
+                  Home
                 </a>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
@@ -78,6 +105,49 @@ export default function PageContent() {
                     Send email
                   </a>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="container">
+        <div className="bg-secondary rounded-3 py-5 px-3 px-sm-4 px-md-0">
+          <h2 className="text-center pt-md-1 pt-lg-3 pt-xl-4 pb-4 mt-xl-1 mb-2">
+            Frequently Asked Questions
+          </h2>
+          <div className="row justify-content-center pb-lg-4 pb-xl-5">
+            <div className="col-xl-8 col-lg-9 col-md-10 pb-md-2">
+              <div className="accordion" id="faq">
+                {faqItems.map((item, index) => (
+                  <div
+                    className="accordion-item border-0 rounded-3 shadow-sm mb-3"
+                    key={index}
+                  >
+                    <h3 className="accordion-header">
+                      <button
+                        className="accordion-button shadow-none rounded-3"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#q-${index + 1}`}
+                        aria-expanded={index === 0 ? "true" : "false"}
+                        aria-controls={`q-${index + 1}`}
+                      >
+                        {item.question}
+                      </button>
+                    </h3>
+                    <div
+                      className={`accordion-collapse collapse ${
+                        index === 0 ? "show" : ""
+                      }`}
+                      id={`q-${index + 1}`}
+                      data-bs-parent="#faq"
+                    >
+                      <div className="accordion-body fs-sm pt-0">
+                        <p>{item.answer}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
