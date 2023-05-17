@@ -1,5 +1,12 @@
 import React from "react";
+import Navbar from "../../components/Navbar/Navbar";
+import PageContent from "./PageContent";
 
 export default function Error404() {
-  return <div>hello i am the 404 page</div>;
+  return (
+    <main className="page-wrapper">
+      <Navbar />
+      <PageContent />
+    </main>
+  );
 }
