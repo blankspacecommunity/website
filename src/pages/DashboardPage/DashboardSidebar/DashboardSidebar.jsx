@@ -1,20 +1,48 @@
 import { React, useState, useEffect } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../../scripts/firebase/config/firebaseConfig";
 import { signOutUser } from "../../../scripts/firebase/authentication/authentication";
+import { getUserProfileDetails } from "../../../scripts/firebase/database/database";
 
 export default function DashboardSidebar() {
   const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [profileSectionActive, setProfileSectionActive] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // useEffect(() => {
+  //   const user = auth.currentUser;
+  //   if (user) {
+  //     setUsername(user.displayName);
+  //     setUserEmail(user.email);
+  //   }
+  // }, []);
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUsername(user.displayName);
-      setUserEmail(user.email);
+    setProfileSectionActive(location.pathname === "/dashboard/profile");
+  }, [location]);
+
+  const fetchUserDetails = async (uid) => {
+    const userProfileDetails = await getUserProfileDetails(uid);
+    console.log(userProfileDetails);
+  };
+
+  useEffect(() => {
+    if (profileSectionActive) {
+      try {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            const { uid } = user;
+            fetchUserDetails(uid);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, []);
+  }, [profileSectionActive]);
+
   return (
     <aside className="col-lg-3 col-md-4 border-end pb-5 mt-n5">
       <div className="position-sticky top-0">
