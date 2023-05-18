@@ -1,3 +1,19 @@
+/*
+ * AUTHENTICATION
+ * Functions for user authentication.
+ * Includes:
+ * - createAccountWithEmailAndPassword
+ * - signInUserWithEmailAndPassword
+ * - signOutUser
+ * - resetPassword
+ * - verifyNewPassword
+ * - createError
+ *
+ * Note: some functions are creating error using the createError function and some are returning the error object directly.
+ * this need to be fixed and all functions should be using the createError function (or none of them should be using it)
+ * this shall be fixed in the next minor release
+ */
+
 /* eslint-disable no-useless-catch */
 import {
   createUserWithEmailAndPassword,
