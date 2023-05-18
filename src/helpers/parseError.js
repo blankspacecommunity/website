@@ -6,6 +6,10 @@ const knownErrors = {
       "your browser denied permission to store biscuits. please enable biscuits and try again.",
   },
   // client errors
+  "client/invalid-password-reset-link": {
+    title: "Invalid password reset link",
+    message: "The password reset link is invalid or has expired.",
+  },
   "client/not-college-mail": {
     title: "Invalid email",
     message: "Please enter a valid email address provided by your college.",
@@ -25,6 +29,11 @@ const knownErrors = {
   },
 
   // Firebase errors
+  "password-reset-code-invalid": {
+    title: "Invalid verification code",
+    message: "The verification code is invalid or expired.",
+  },
+
   "auth/requires-recent-login": {
     title: "Requires recent login",
     message:
