@@ -1,4 +1,10 @@
 const knownErrors = {
+  // permission errors
+  "local-storage-not-supported": {
+    title: "Unable to get data",
+    message:
+      "your browser denied permission to store biscuits. please enable biscuits and try again.",
+  },
   // client errors
   "client/not-college-mail": {
     title: "Invalid email",
@@ -86,7 +92,7 @@ const parseError = (errorCode) => {
   if (knownErrors[errorCode]) {
     knownErrors[errorCode].delay = 6000;
     knownErrors[errorCode].position = "top-end";
-    knownErrors[errorCode].code = ""; // what is this even for [reply: Idk, it was actually time in the original code]
+    knownErrors[errorCode].code = "";
 
     return knownErrors[errorCode];
   }

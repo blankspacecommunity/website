@@ -1,20 +1,59 @@
 import { React, useState, useEffect } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../../scripts/firebase/config/firebaseConfig";
 import { signOutUser } from "../../../scripts/firebase/authentication/authentication";
+import { getUserProfileDetails } from "../../../scripts/firebase/database/database";
+import ToastModal from "../../../components/ToastModal/ToastModal";
+import parseError from "../../../helpers/parseError";
 
 export default function DashboardSidebar() {
   const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
+  const [profileSectionActive, setProfileSectionActive] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [showToast, setShowToast] = useState(false);
+  let toastData = {};
+  const [toastContent, setToastContent] = useState({
+    title: "",
+    code: "",
+    message: "",
+    delay: 0,
+    position: "top-end",
+  });
 
   useEffect(() => {
-    const user = auth.currentUser;
-    if (user) {
-      setUsername(user.displayName);
-      setUserEmail(user.email);
+    setProfileSectionActive(location.pathname === "/dashboard/profile");
+  }, [location]);
+
+  const fetchUserDetails = async (uid) => {
+    try {
+      const userProfileDetails = await getUserProfileDetails(uid);
+      console.log("success", userProfileDetails);
+    } catch (error) {
+      toastData = parseError(error.code);
+      setToastContent(toastData);
+      setShowToast(true);
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    if (profileSectionActive) {
+      try {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            const { uid } = user;
+            fetchUserDetails(uid);
+          }
+        });
+      } catch (error) {
+        console.log("i am  a cn", error.code);
+      }
+    }
+  }, [profileSectionActive]);
+
   return (
     <aside className="col-lg-3 col-md-4 border-end pb-5 mt-n5">
       <div className="position-sticky top-0">
@@ -88,6 +127,15 @@ export default function DashboardSidebar() {
           </div>
         </div>
       </div>
+      <Row>
+        <Col xs={6}>
+          <ToastModal
+            showToast={showToast}
+            setShowToast={setShowToast}
+            toastContent={toastContent}
+          />
+        </Col>
+      </Row>
     </aside>
   );
 }
