@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../../scripts/firebase/config/firebaseConfig";
 import { signOutUser } from "../../../scripts/firebase/authentication/authentication";
 import { getUserProfileDetails } from "../../../scripts/firebase/database/database";
-import ToastModal from "../../components/ToastModal/ToastModal";
+import ToastModal from "../../../components/ToastModal/ToastModal";
 
 export default function DashboardSidebar() {
   const [username, setUsername] = useState("");
@@ -38,7 +38,9 @@ export default function DashboardSidebar() {
             fetchUserDetails(uid);
           }
         });
-      } catch (error) {}
+      } catch (error) {
+        console.log(error);
+      }
     }
   }, [profileSectionActive]);
 
