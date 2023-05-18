@@ -27,7 +27,7 @@ const getUserProfileDetails = async (uid) => {
     // if cached data is available, return it
     if (userProfileDetailsCache) {
       console.log("getUserProfileDetails(): returning cached data");
-      return userProfileDetailsCache;
+      return JSON.parse(userProfileDetailsCache);
     }
   } else {
     // no web storage support
