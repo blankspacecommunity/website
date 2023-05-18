@@ -7,20 +7,47 @@ if (user) {
   console.log("from database.js the user is: ", user);
 }
 
-const getUserProfileDetails = async (uid) => {
-  console.log("from getUserProfileDetails: uid", uid);
+/*
+ * GET USER PROFILE DETAILS
+ * function to get user profile details from database
+ */
 
+const getUserProfileDetails = async (uid) => {
+  // check whether the browser supports local storage api
+  let localStorageAvailable = false;
+
+  if (typeof Storage !== "undefined") {
+    localStorageAvailable = true;
+
+    // check whether the user profile details are cached in local storage
+    const userProfileDetailsCache = localStorage.getItem(
+      "userProfileDetailsCache"
+    );
+
+    // if cached data is available, return it
+    if (userProfileDetailsCache) {
+      console.log("getUserProfileDetails(): returning cached data");
+      return userProfileDetailsCache;
+    }
+  } else {
+    // no web storage support
+  }
+
+  // if cached data is not available, fetch it from database
   const snapshot = await get(ref(database, `users/${uid}`));
   const { name, email, username, phone, bio } = snapshot.val();
+  const userProfileDetails = { name, email, username, phone, bio };
 
-  console.log("data returning from getUserProfileDetails: ", {
-    name,
-    email,
-    username,
-    phone,
-    bio,
-  });
-  return { name, email, username, phone, bio };
+  // cache the data in local storage
+  if (localStorageAvailable) {
+    localStorage.setItem(
+      "userProfileDetailsCache",
+      JSON.stringify(userProfileDetails)
+    );
+  }
+
+  console.log("getUserProfileDetails(): returning fetched data");
+  return userProfileDetails;
 };
 
 const updateUserProfileDetails = async () => {};
