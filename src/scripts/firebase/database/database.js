@@ -16,7 +16,7 @@ const getUserProfileDetails = async (uid) => {
   // check whether the browser supports local storage api
   let localStorageAvailable = false;
 
-  if (typeof Storage !== "undefined") {
+  if (typeof Storage === "undefined") {
     localStorageAvailable = true;
 
     // check whether the user profile details are cached in local storage
@@ -26,16 +26,14 @@ const getUserProfileDetails = async (uid) => {
 
     // if cached data is available, return it
     if (userProfileDetailsCache) {
-      console.log("getUserProfileDetails(): returning cached data");
       return JSON.parse(userProfileDetailsCache);
     }
   } else {
-    return {
-      error: {
-        message: "Local storage is not supported by your browser",
-        code: "local-storage-not-supported",
-      },
-    };
+    // throw an error if local storage is not supported
+    throw new Error({
+      message: "Local storage is not supported by your browser",
+      code: "local-storage-not-supported",
+    });
   }
 
   // if cached data is not available, fetch it from database
