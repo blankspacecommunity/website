@@ -1,15 +1,14 @@
 import { getDatabase, ref, update, get } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
 
-const user = auth.currentUser;
-
-if (user) {
-  console.log("from database.js the user is: ", user);
-}
+/*
+ * CREATE ERROR
+ * function to create an error object
+ */
 
 const createError = (message, code) => ({
-  message: message,
-  code: code,
+  message,
+  code,
 });
 
 /*
@@ -21,7 +20,7 @@ const getUserProfileDetails = async (uid) => {
   // check whether the browser supports local storage api
   let localStorageAvailable = false;
 
-  if (typeof Storage === "undefined") {
+  if (typeof Storage !== "undefined") {
     localStorageAvailable = true;
 
     // check whether the user profile details are cached in local storage
@@ -53,10 +52,13 @@ const getUserProfileDetails = async (uid) => {
       JSON.stringify(userProfileDetails)
     );
   }
-
-  console.log("getUserProfileDetails(): returning fetched data");
   return userProfileDetails;
 };
+
+/*
+ * UPDATE USER PROFILE DETAILS
+ * function to update user profile details in database
+ */
 
 const updateUserProfileDetails = async () => {};
 
