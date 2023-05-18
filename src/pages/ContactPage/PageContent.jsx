@@ -4,28 +4,128 @@ export default function PageContent() {
   const faqItems = [
     {
       question: "What is blankspace?",
-      answer:
-        "Blankspace is a community that helps people learn, grow, and connect. Whether you're a beginner or an experienced professional, Blankspace has something to offer you.",
+      answer: (
+        <p>
+          Blankspace is a community that helps people learn, grow, and connect.
+          <ul>
+            <li>
+              We provide a variety of resources and opportunities for people to
+              learn and develop their knowledge and skills.
+            </li>
+            <li>
+              {" "}
+              We recommend projects and works based on your interests, so you
+              can always find something new to learn.
+            </li>
+            <li>
+              We connect people with similar interests so you can collaborate on
+              projects, share ideas, and build relationships.
+            </li>
+            <li>
+              {" "}
+              We host hackathons and events to give you a chance to put your
+              skills to the test and meet other like-minded people.
+            </li>
+          </ul>
+          Whether you're a beginner or an experienced professional, Blankspace
+          has something to offer you.
+        </p>
+      ),
     },
     {
       question: "Why should I join Blankspace?",
-      answer:
-        "Blankspace is a community that connects people, projects, and opportunities. We create a network between colleagues, explore many projects, expose community members outside the community, and schedule several events and programs to help you achieve your goals.",
+      answer: (
+        <p>
+          Blankspace is a community that connects people, projects, and
+          opportunities.
+          <ul>
+            <li>
+              We create a network between colleagues so that you can collaborate
+              on projects, share ideas, and build relationships.
+            </li>
+            <li>
+              We explore many projects that will provide you with a working
+              experience, so you can learn new skills and advance your career.
+            </li>
+            <li>
+              We expose community members outside the community so that you can
+              be assigned with projects from several departments, giving you a
+              well-rounded experience.
+            </li>
+            <li>
+              We schedule several events and programs that will help you achieve
+              your goals, such as hackathons, workshops, and meetups.
+            </li>
+          </ul>
+        </p>
+      ),
     },
     {
       question: "Is it free to join Blankspace?",
-      answer:
-        "Yes, it is absolutely free to join Blankspace! By becoming a member of our vibrant community, you'll gain access to an abundance of valuable resources, exciting collaboration opportunities, and a nurturing environment where like-minded individuals are ready to support you every step of the way. Join our free community today and unlock a world of benefits awaiting you!",
+      answer: (
+        <p>
+          Yes, it is absolutely free to join Blankspace! By becoming a member of
+          our vibrant community, you'll gain access to an abundance of valuable
+          resources, exciting collaboration opportunities, and a nurturing
+          environment where like-minded individuals are ready to support you
+          every step of the way. Join our free community today and unlock a
+          world of benefits awaiting you!
+        </p>
+      ),
     },
     {
       question: "What are the benefits of joining Blankspace?",
-      answer:
-        "Our community is a great place to learn and grow your programming skills. We offer a variety of resources and opportunities for members to learn, including access to a community of experienced programmers and the opportunity to work on real-world open source projects. We also host regular quizzes and competitions to help members test their knowledge and skills.",
+      answer: (
+        <p>
+          Our community is a great place to learn and grow your programming
+          skills.
+          <ul>
+            <li>
+              We offer a variety of resources and opportunities for members to
+              learn, including:{" "}
+            </li>
+            <ul>
+              <li>
+                {" "}
+                Access to a community of experienced programmers who are always
+                willing to help
+              </li>
+              <li>
+                The opportunity to work on real-world open source projects
+              </li>
+            </ul>
+            <li>
+              We also host regular quizzes and competitions to help members test
+              their knowledge and skills.
+            </li>
+          </ul>
+          If you're looking to improve your programming skills, our community is
+          the perfect place for you.
+        </p>
+      ),
     },
     {
       question: "Can I use my personal Gmail to create an account?",
-      answer:
-        "We are currently only accepting college email addresses for registration. This is to ensure that our community is made up of genuine students who are interested in learning and growing. We will be updating our policies on email verification soon, and we will announce the changes here on our website. In the meantime, if you are a student and you do not have a college email address, please contact us and we will be happy to help you create an account. We hope you understand and we look forward to seeing you in our community!",
+      answer: (
+        <p>
+          We are currently only accepting college email addresses for
+          registration.
+          <ul>
+            <li>
+              This is to ensure that our community is made up of genuine
+              students who are interested in learning and growing.
+            </li>
+            <li>
+              We will be updating our policies on email verification soon, and
+              we will announce the changes here on our website.
+            </li>
+          </ul>
+          In the meantime, if you are a student and you do not have a college
+          email address, please contact us and we will be happy to help you
+          create an account. We hope you understand and we look forward to
+          seeing you in our community!
+        </p>
+      ),
     },
   ];
   return (
@@ -143,7 +243,7 @@ export default function PageContent() {
                       data-bs-parent="#faq"
                     >
                       <div className="accordion-body fs-sm pt-0">
-                        <p>{item.answer}</p>
+                        {item.answer}
                       </div>
                     </div>
                   </div>
