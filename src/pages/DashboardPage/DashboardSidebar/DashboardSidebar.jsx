@@ -4,6 +4,7 @@ import { auth } from "../../../scripts/firebase/config/firebaseConfig";
 import { signOutUser } from "../../../scripts/firebase/authentication/authentication";
 import { getUserProfileDetails } from "../../../scripts/firebase/database/database";
 import ToastModal from "../../../components/ToastModal/ToastModal";
+import parseError from "../../../helpers/parseError";
 
 export default function DashboardSidebar() {
   const [username, setUsername] = useState("");
@@ -12,6 +13,7 @@ export default function DashboardSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const [showToast, setShowToast] = useState(false);
+  let toastData = {};
   const [toastContent, setToastContent] = useState({
     title: "",
     code: "",
@@ -25,8 +27,14 @@ export default function DashboardSidebar() {
   }, [location]);
 
   const fetchUserDetails = async (uid) => {
-    const userProfileDetails = await getUserProfileDetails(uid);
-    console.log(userProfileDetails);
+    try {
+      const userProfileDetails = await getUserProfileDetails(uid);
+      console.log("success", userProfileDetails);
+    } catch (error) {
+      toastData = parseError(error.code);
+      setToastContent(toastData);
+      setShowToast(true);
+    }
   };
 
   useEffect(() => {
@@ -39,7 +47,7 @@ export default function DashboardSidebar() {
           }
         });
       } catch (error) {
-        console.log(error);
+        console.log("i am  a cn", error.code);
       }
     }
   }, [profileSectionActive]);
