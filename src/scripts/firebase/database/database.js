@@ -7,6 +7,11 @@ if (user) {
   console.log("from database.js the user is: ", user);
 }
 
+const createError = (message, code) => ({
+  message: message,
+  code: code,
+});
+
 /*
  * GET USER PROFILE DETAILS
  * function to get user profile details from database
@@ -30,10 +35,10 @@ const getUserProfileDetails = async (uid) => {
     }
   } else {
     // throw an error if local storage is not supported
-    throw new Error({
-      message: "Local storage is not supported by your browser",
-      code: "local-storage-not-supported",
-    });
+    throw createError(
+      "Local storage is not supported by your browser",
+      "local-storage-not-supported"
+    );
   }
 
   // if cached data is not available, fetch it from database
