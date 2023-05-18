@@ -29,9 +29,10 @@ export default function FormContent() {
 
   // check if redirected from password reset page
   const redirectedFromPasswordResetPage = searchParams.get("password-reset");
+  const redirectedFromNewPasswordPage = searchParams.get("new-password");
 
   useEffect(() => {
-    // if redirected from password reset page, show toast
+    // if redirected from password reset page or new password page, show toast
     if (redirectedFromPasswordResetPage === "true") {
       setToastContent({
         title: "Password reset successful!",
@@ -43,7 +44,18 @@ export default function FormContent() {
       });
       setShowToast(true);
     }
-  }, [redirectedFromPasswordResetPage]);
+
+    if (redirectedFromNewPasswordPage === "true") {
+      setToastContent({
+        title: "Enter your new password!",
+        code: "",
+        message: "Enter your new password to sign in to your account.",
+        delay: 10000,
+        position: "top-end",
+      });
+      setShowToast(true);
+    }
+  }, [redirectedFromPasswordResetPage, redirectedFromNewPasswordPage]);
 
   // handle form submission
   const handleSubmit = async (e) => {
