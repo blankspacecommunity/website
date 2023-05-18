@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import ToastModal from "../../components/ToastModal/ToastModal";
 import parseError from "../../helpers/parseError";
 
@@ -21,9 +21,13 @@ export default function FormContent() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
 
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+  const passwordVerificationCode = searchParams.get("oobCode");
+  const passwordVerificationMode = searchParams.get("mode");
 
   const handlePasswordToggle = (e, ref) => {
     if (ref.current.type === "password") {
@@ -35,7 +39,6 @@ export default function FormContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // disable button while loading
     setIsLoading(true);
     let toastData = {};
@@ -47,7 +50,6 @@ export default function FormContent() {
       setIsLoading(false);
       return;
     }
-
     if (password !== confirmPassword) {
       toastData = parseError("client/passwords-dont-match");
 
@@ -57,12 +59,28 @@ export default function FormContent() {
       return;
     }
 
-    const verificationDetails = await verifyNewPassword(password);
-
-    if (verificationDetails) {
-      console.log(verificationDetails);
-      // navigate("/signin?newPassword=true");
+    if (passwordVerificationMode !== "resetPassword") {
+      toastData = parseError("client/invalid-password-reset-link");
+      setToastContent(toastData);
+      setShowToast(true);
+      setIsLoading(false);
+      return;
     }
+
+    const verificationDetails = await verifyNewPassword(
+      passwordVerificationCode,
+      password
+    );
+
+    if (!verificationDetails.error) {
+      navigate("/signin?new-password=true");
+    } else {
+      toastData = parseError(verificationDetails.code);
+      setToastContent(toastData);
+      setShowToast(true);
+    }
+
+    setIsLoading(false);
   };
 
   return (
