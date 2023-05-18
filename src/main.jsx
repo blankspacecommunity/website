@@ -12,7 +12,7 @@ import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignInPage from "./pages/SignInPage/SignInPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage";
-
+import NewPasswordPage from "./pages/NewPasswordPage/NewPasswordPage";
 import Error404 from "./pages/Error404/Error404";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
 import Profile from "./pages/DashboardPage/ProfileSection/Profile";
@@ -49,6 +49,10 @@ const router = createBrowserRouter([
   {
     path: "/resetpassword",
     element: <ResetPasswordPage />,
+  },
+  {
+    path: "/newpassword",
+    element: <NewPasswordPage />,
   },
   {
     path: "/contact",
