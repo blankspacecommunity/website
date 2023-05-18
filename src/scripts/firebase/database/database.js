@@ -30,7 +30,12 @@ const getUserProfileDetails = async (uid) => {
       return JSON.parse(userProfileDetailsCache);
     }
   } else {
-    // no web storage support
+    return {
+      error: {
+        message: "Local storage is not supported by your browser",
+        code: "local-storage-not-supported",
+      },
+    };
   }
 
   // if cached data is not available, fetch it from database
@@ -38,7 +43,7 @@ const getUserProfileDetails = async (uid) => {
   const { name, email, username, phone, bio } = snapshot.val();
   const userProfileDetails = { name, email, username, phone, bio };
 
-  // cache the data in local storage
+  // cache the data in local storage if possible
   if (localStorageAvailable) {
     localStorage.setItem(
       "userProfileDetailsCache",
