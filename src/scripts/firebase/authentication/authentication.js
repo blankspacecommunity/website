@@ -27,27 +27,21 @@ const createError = (message, code) => ({
  */
 
 const verifyNewPassword = async (code, newPassword) => {
-  verifyPasswordResetCode(auth, code)
-    .then(() => {
-      // Password reset code is valid
-
-      confirmPasswordReset(auth, code, newPassword)
-        .then(() =>
-          // Password reset successful
-          ({ error: null })
-        )
-        .catch(() => {
-          // Password reset failed
-          throw createError("Password reset failed", "password-reset-failed");
-        });
-    })
-    .catch(() => {
-      // Password reset code is invalid
-      throw createError(
+  try {
+    await verifyPasswordResetCode(auth, code);
+    await confirmPasswordReset(auth, code, newPassword);
+    // Password reset successful
+    return { error: null };
+  } catch (error) {
+    // Invalid or expired action code.
+    if (error.code === "auth/invalid-action-code") {
+      return createError(
         "Password reset code is invalid",
         "password-reset-code-invalid"
       );
-    });
+    }
+    return createError("Password reset failed", "password-reset-failed");
+  }
 };
 
 /*
