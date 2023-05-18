@@ -8,8 +8,8 @@ if (user) {
 }
 
 const createError = (message, code) => ({
-  message: message,
-  code: code,
+  message,
+  code,
 });
 
 /*
@@ -21,7 +21,7 @@ const getUserProfileDetails = async (uid) => {
   // check whether the browser supports local storage api
   let localStorageAvailable = false;
 
-  if (typeof Storage === "undefined") {
+  if (typeof Storage !== "undefined") {
     localStorageAvailable = true;
 
     // check whether the user profile details are cached in local storage
