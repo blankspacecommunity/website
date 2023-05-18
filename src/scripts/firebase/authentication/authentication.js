@@ -5,9 +5,34 @@ import {
   updateProfile,
   signOut,
   sendPasswordResetEmail,
+  confirmPasswordReset,
+  verifyPasswordResetCode,
 } from "firebase/auth";
 import { ref, set, get, child } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
+/*
+ * VERIFY NEW PASSWORD
+ * Verify the new password and update the user's password.
+ */
+
+const verifyNewPassword = async (code, newPassword) => {
+  verifyPasswordResetCode(auth, code)
+    .then(() => {
+      // Display a "new password" form with the provided email address
+
+      confirmPasswordReset(auth, code, newPassword)
+        .then(() => {
+          // Password reset successful
+          // Perform any additional actions or redirect the user
+        })
+        .catch(() => {
+          // Error occurred while resetting the password
+        });
+    })
+    .catch(() => {
+      // Invalid code
+    });
+};
 
 /*
  * RESET PASSWORD
@@ -32,9 +57,7 @@ const signOutUser = async () => {
   try {
     const user = auth.currentUser;
     if (user) {
-      console.log("signing out the user ", user.displayName);
       await signOut(auth);
-      console.log(user.displayName, " is now signed out");
       return { error: null };
     }
     return new Error("No user signed in");
@@ -97,7 +120,6 @@ const createAccountWithEmailAndPassword = async (
         displayName: name,
       });
     } catch (error) {
-      console.log(error);
       throw error;
     }
 
@@ -121,4 +143,5 @@ export {
   signInUserWithEmailAndPassword,
   signOutUser,
   resetPassword,
+  verifyNewPassword,
 };
