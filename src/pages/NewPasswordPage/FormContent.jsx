@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import ToastModal from "../../components/ToastModal/ToastModal";
 import parseError from "../../helpers/parseError";
 
-import { resetPassword } from "../../scripts/firebase/authentication/authentication";
+import { verifyNewPassword } from "../../scripts/firebase/authentication/authentication";
 
 export default function FormContent() {
   const [showToast, setShowToast] = useState(false);
@@ -18,8 +18,20 @@ export default function FormContent() {
   });
 
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+
+  const handlePasswordToggle = (e, ref) => {
+    if (ref.current.type === "password") {
+      ref.current.type = "text";
+    } else {
+      ref.current.type = "password";
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,50 +40,100 @@ export default function FormContent() {
     setIsLoading(true);
     let toastData = {};
 
-    // check if email is college email
-    if (!(email.includes("@bsemail.web.app") || email.includes(".ajce.in"))) {
-      toastData = parseError("client/not-college-mail");
+    if (password.length < 6) {
+      toastData = parseError("client/password-too-short");
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
       return;
     }
 
-    // if college email, try to send reset password link
-    const authResponse = await resetPassword(email);
+    if (password !== confirmPassword) {
+      toastData = parseError("client/passwords-dont-match");
 
-    if (authResponse.error) {
-      toastData = parseError(authResponse.error.code);
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
-    } else {
-      setIsLoading(false);
-      navigate("/signin?password-reset=true");
+      return;
+    }
+
+    const verificationDetails = await verifyNewPassword(password);
+
+    if (verificationDetails) {
+      console.log(verificationDetails);
+      // navigate("/signin?newPassword=true");
     }
   };
 
   return (
     <>
       <form className="needs-validation mb-2" onSubmit={handleSubmit}>
-        <div className="position-relative mb-4">
-          <label htmlFor="email" className="form-label fs-base">
-            Email
+        <div className="col-12 mb-4">
+          <label htmlFor="password" className="form-label fs-base">
+            Password
           </label>
-          <input
-            type="email"
-            id="email"
-            className="form-control form-control-lg"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <div className="password-toggle">
+            <input
+              type="password"
+              id="password"
+              className="form-control form-control-lg"
+              ref={passwordRef}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <label
+              className="password-toggle-btn"
+              aria-label="Show/hide password"
+            >
+              <input
+                className="password-toggle-check"
+                type="checkbox"
+                onClick={(e) => handlePasswordToggle(e, passwordRef)}
+              />
+              <span className="password-toggle-indicator" />
+            </label>
+            <div className="invalid-feedback position-absolute start-0 top-100">
+              Please enter a password!
+            </div>
+          </div>
+        </div>
+        <div className="col-12 mb-4">
+          <label htmlFor="password-confirm" className="form-label fs-base">
+            Confirm password
+          </label>
+          <div className="password-toggle">
+            <input
+              type="password"
+              id="password-confirm"
+              className="form-control form-control-lg"
+              ref={confirmPasswordRef}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <label
+              className="password-toggle-btn"
+              aria-label="Show/hide password"
+            >
+              <input
+                className="password-toggle-check"
+                type="checkbox"
+                onClick={(e) => handlePasswordToggle(e, confirmPasswordRef)}
+              />
+              <span className="password-toggle-indicator" />
+            </label>
+            <div className="invalid-feedback position-absolute start-0 top-100">
+              Please enter a password!
+            </div>
+          </div>
         </div>
         <button
           type="submit"
           className="btn btn-primary shadow-primary btn-lg w-100"
           disabled={isLoading}
         >
-          Reset Password
+          Change Password
         </button>
       </form>
       <Row>
