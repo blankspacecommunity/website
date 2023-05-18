@@ -1,13 +1,13 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ToastModal from "../../components/ToastModal/ToastModal";
 import parseError from "../../helpers/parseError";
-
 import { verifyNewPassword } from "../../scripts/firebase/authentication/authentication";
 
 export default function FormContent() {
+  // Toast
   const [showToast, setShowToast] = useState(false);
   const [toastContent, setToastContent] = useState({
     title: "",
@@ -17,18 +17,25 @@ export default function FormContent() {
     position: "top-end",
   });
 
-  const navigate = useNavigate();
+  // States
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Navigate and location
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
+  // Refs
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+
+  // parse url
   const passwordVerificationCode = searchParams.get("oobCode");
   const passwordVerificationMode = searchParams.get("mode");
 
+  // toggle password visibility
   const handlePasswordToggle = (e, ref) => {
     if (ref.current.type === "password") {
       ref.current.type = "text";
@@ -37,12 +44,14 @@ export default function FormContent() {
     }
   };
 
+  // handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     // disable button while loading
     setIsLoading(true);
     let toastData = {};
 
+    // check if password is less than 6 characters
     if (password.length < 6) {
       toastData = parseError("client/password-too-short");
       setToastContent(toastData);
@@ -50,15 +59,17 @@ export default function FormContent() {
       setIsLoading(false);
       return;
     }
+
+    // check if passwords match
     if (password !== confirmPassword) {
       toastData = parseError("client/passwords-dont-match");
-
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
       return;
     }
 
+    // check if password reset link has mode=resetPassword
     if (passwordVerificationMode !== "resetPassword") {
       toastData = parseError("client/invalid-password-reset-link");
       setToastContent(toastData);
@@ -67,20 +78,22 @@ export default function FormContent() {
       return;
     }
 
+    // verify password
     const verificationDetails = await verifyNewPassword(
       passwordVerificationCode,
       password
     );
 
+    // if no error, navigate to sign in page with query param
     if (!verificationDetails.error) {
       navigate("/signin?new-password=true");
     } else {
+      // if error, show toast
       toastData = parseError(verificationDetails.code);
       setToastContent(toastData);
       setShowToast(true);
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (

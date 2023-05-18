@@ -4,10 +4,10 @@ import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 import ToastModal from "../../components/ToastModal/ToastModal";
 import parseError from "../../helpers/parseError";
-
 import { resetPassword } from "../../scripts/firebase/authentication/authentication";
 
 export default function FormContent() {
+  // Toast
   const [showToast, setShowToast] = useState(false);
   const [toastContent, setToastContent] = useState({
     title: "",
@@ -17,10 +17,14 @@ export default function FormContent() {
     position: "top-end",
   });
 
-  const navigate = useNavigate();
+  // States
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // Navigate
+  const navigate = useNavigate();
+
+  // handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -40,12 +44,14 @@ export default function FormContent() {
     // if college email, try to send reset password link
     const authResponse = await resetPassword(email);
 
+    // if error, show toast
     if (authResponse.error) {
       toastData = parseError(authResponse.error.code);
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
     } else {
+      // if success navigate to sign in page with query param
       setIsLoading(false);
       navigate("/signin?password-reset=true");
     }
