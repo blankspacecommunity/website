@@ -5,9 +5,44 @@ import {
   updateProfile,
   signOut,
   sendPasswordResetEmail,
+  confirmPasswordReset,
+  verifyPasswordResetCode,
 } from "firebase/auth";
 import { ref, set, get, child } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
+
+/*
+ * CREATE ERROR
+ * function to create an error object
+ */
+
+const createError = (message, code) => ({
+  message,
+  code,
+});
+
+/*
+ * VERIFY NEW PASSWORD
+ * Verify the new password and update the user's password.
+ */
+
+const verifyNewPassword = async (code, newPassword) => {
+  try {
+    await verifyPasswordResetCode(auth, code);
+    await confirmPasswordReset(auth, code, newPassword);
+    // Password reset successful
+    return { error: null };
+  } catch (error) {
+    // Invalid or expired action code.
+    if (error.code === "auth/invalid-action-code") {
+      return createError(
+        "Password reset code is invalid",
+        "password-reset-code-invalid"
+      );
+    }
+    return createError("Password reset failed", "password-reset-failed");
+  }
+};
 
 /*
  * RESET PASSWORD
@@ -32,9 +67,7 @@ const signOutUser = async () => {
   try {
     const user = auth.currentUser;
     if (user) {
-      console.log("signing out the user ", user.displayName);
       await signOut(auth);
-      console.log(user.displayName, " is now signed out");
       return { error: null };
     }
     return new Error("No user signed in");
@@ -97,7 +130,6 @@ const createAccountWithEmailAndPassword = async (
         displayName: name,
       });
     } catch (error) {
-      console.log(error);
       throw error;
     }
 
@@ -121,4 +153,5 @@ export {
   signInUserWithEmailAndPassword,
   signOutUser,
   resetPassword,
+  verifyNewPassword,
 };
