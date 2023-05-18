@@ -5,7 +5,8 @@ import { auth } from "../../../scripts/firebase/config/firebaseConfig";
   auth.currentUser is an object that contains the following properties:
   displayName, email, emailVerified, phoneNumber, photoURL, uid, providerData
 */
-export default function Profile() {
+export default function Profile({ userProfileDetails }) {
+  console.log("userProfileDetails", userProfileDetails); // TODO: remove this
   const map = {
     "B.Tech": [
       "Chemical Engineering",

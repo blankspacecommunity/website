@@ -24,14 +24,16 @@ export default function DashboardSidebar() {
     position: "top-end",
   });
 
+  // check if the current location is the profile page
   useEffect(() => {
     setProfileSectionActive(location.pathname === "/dashboard/profile");
   }, [location]);
 
+  // get the user details from the database
   const fetchUserDetails = async (uid) => {
     try {
       const userProfileDetails = await getUserProfileDetails(uid);
-      console.log("success", userProfileDetails);
+      // todo: send as props to the profile page
     } catch (error) {
       toastData = parseError(error.code);
       setToastContent(toastData);
@@ -39,6 +41,7 @@ export default function DashboardSidebar() {
     }
   };
 
+  // get the user details from the database when the profile section is active
   useEffect(() => {
     if (profileSectionActive) {
       try {
@@ -49,7 +52,9 @@ export default function DashboardSidebar() {
           }
         });
       } catch (error) {
-        console.log("i am  a cn", error.code);
+        toastData = parseError(error.code);
+        setToastContent(toastData);
+        setShowToast(true);
       }
     }
   }, [profileSectionActive]);
