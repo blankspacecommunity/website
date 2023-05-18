@@ -10,6 +10,17 @@ import {
 } from "firebase/auth";
 import { ref, set, get, child } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
+
+/*
+ * CREATE ERROR
+ * function to create an error object
+ */
+
+const createError = (message, code) => ({
+  message,
+  code,
+});
+
 /*
  * VERIFY NEW PASSWORD
  * Verify the new password and update the user's password.
@@ -18,19 +29,24 @@ import { auth, database } from "../config/firebaseConfig";
 const verifyNewPassword = async (code, newPassword) => {
   verifyPasswordResetCode(auth, code)
     .then(() => {
-      // Display a "new password" form with the provided email address
+      // Password reset code is valid
 
       confirmPasswordReset(auth, code, newPassword)
-        .then(() => {
+        .then(() =>
           // Password reset successful
-          // Perform any additional actions or redirect the user
-        })
+          ({ error: null })
+        )
         .catch(() => {
-          // Error occurred while resetting the password
+          // Password reset failed
+          throw createError("Password reset failed", "password-reset-failed");
         });
     })
     .catch(() => {
-      // Invalid code
+      // Password reset code is invalid
+      throw createError(
+        "Password reset code is invalid",
+        "password-reset-code-invalid"
+      );
     });
 };
 
