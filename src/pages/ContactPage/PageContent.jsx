@@ -27,8 +27,8 @@ export default function PageContent() {
               skills to the test and meet other like-minded people.
             </li>
           </ul>
-          Whether you're a beginner or an experienced professional, Blankspace
-          has something to offer you.
+          Whether you&apos;re a beginner or an experienced professional,
+          Blankspace has something to offer you.
         </p>
       ),
     },
@@ -65,11 +65,11 @@ export default function PageContent() {
       answer: (
         <p>
           Yes, it is absolutely free to join Blankspace! By becoming a member of
-          our vibrant community, you'll gain access to an abundance of valuable
-          resources, exciting collaboration opportunities, and a nurturing
-          environment where like-minded individuals are ready to support you
-          every step of the way. Join our free community today and unlock a
-          world of benefits awaiting you!
+          our vibrant community, you&apos;ll gain access to an abundance of
+          valuable resources, exciting collaboration opportunities, and a
+          nurturing environment where like-minded individuals are ready to
+          support you every step of the way. Join our free community today and
+          unlock a world of benefits awaiting you!
         </p>
       ),
     },
@@ -99,8 +99,8 @@ export default function PageContent() {
               their knowledge and skills.
             </li>
           </ul>
-          If you're looking to improve your programming skills, our community is
-          the perfect place for you.
+          If you&apos;re looking to improve your programming skills, our
+          community is the perfect place for you.
         </p>
       ),
     },
