@@ -4,10 +4,10 @@ import Row from "react-bootstrap/Row";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { signInUserWithEmailAndPassword } from "../../scripts/firebase/authentication/authentication";
 import ToastModal from "../../components/ToastModal/ToastModal";
-
 import parseError from "../../helpers/parseError";
 
 export default function FormContent() {
+  // Toast
   const [showToast, setShowToast] = useState(false);
   const [toastContent, setToastContent] = useState({
     title: "",
@@ -17,17 +17,22 @@ export default function FormContent() {
     position: "top-end",
   });
 
-  const navigate = useNavigate();
+  // States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Navigate and Location
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const passwordResetFromUrl = searchParams.get("password-reset");
+  // check if redirected from password reset page
+  const redirectedFromPasswordResetPage = searchParams.get("password-reset");
 
   useEffect(() => {
-    if (passwordResetFromUrl === "true") {
+    // if redirected from password reset page, show toast
+    if (redirectedFromPasswordResetPage === "true") {
       setToastContent({
         title: "Password reset successful!",
         code: "",
@@ -38,8 +43,9 @@ export default function FormContent() {
       });
       setShowToast(true);
     }
-  }, [passwordResetFromUrl]);
+  }, [redirectedFromPasswordResetPage]);
 
+  // handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,7 +74,6 @@ export default function FormContent() {
     // if sign in failed, show error
     if (authResponse.error) {
       toastData = parseError(authResponse.error.code);
-
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
