@@ -7,6 +7,7 @@ import ToastModal from "../../components/ToastModal/ToastModal";
 import parseError from "../../helpers/parseError";
 
 export default function FormContent() {
+  // Toast
   const [showToast, setShowToast] = useState(false);
   const [toastContent, setToastContent] = useState({
     title: "",
@@ -16,19 +17,24 @@ export default function FormContent() {
     position: "top-end",
   });
 
+  // Navigate
   const navigate = useNavigate();
 
+  // States
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState(null);
 
+  // Refs
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
 
+  const regex = /^[a-z0-9_]{1,15}$/i; // UNDER 15 characters, can only contain letters, numbers and underscores
+
+  // toggle password visibility
   const handlePasswordToggle = (e, ref) => {
     if (ref.current.type === "password") {
       ref.current.type = "text";
@@ -37,24 +43,24 @@ export default function FormContent() {
     }
   };
 
+  // handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // disable button while loading
     setIsLoading(true);
     let toastData = {};
 
-    // UNDER 15 characters, can only contain letters, numbers and underscores
-    // /i is for allowing both upper and lower chars
-    const regex = /^[a-z0-9_]{1,15}$/i;
-
+    // check if email is college email
     if (!(email.includes("@bsemail.web.app") || email.includes(".ajce.in"))) {
       toastData = parseError("client/not-college-mail");
-
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
       return;
     }
 
+    // check if username is valid
     if (!regex.test(username)) {
       toastData = parseError("client/invalid-username");
 
@@ -64,6 +70,7 @@ export default function FormContent() {
       return;
     }
 
+    // check if password length is less than 6
     if (password.length < 6) {
       toastData = parseError("client/password-too-short");
       setToastContent(toastData);
@@ -72,6 +79,7 @@ export default function FormContent() {
       return;
     }
 
+    // check if passwords match
     if (password !== confirmPassword) {
       toastData = parseError("client/passwords-dont-match");
 
@@ -81,6 +89,7 @@ export default function FormContent() {
       return;
     }
 
+    // create account
     const authResponse = await createAccountWithEmailAndPassword(
       name,
       email,
@@ -88,14 +97,14 @@ export default function FormContent() {
       password
     );
 
+    // check if account was created then redirect to dashboard
     if (authResponse.user) {
-      setUser(authResponse.user);
       navigate("/dashboard");
     }
 
+    // check if error occurred if so show toast
     if (authResponse.error) {
       toastData = parseError(authResponse.error.code);
-
       setToastContent(toastData);
       setShowToast(true);
       setIsLoading(false);
