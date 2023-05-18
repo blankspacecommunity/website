@@ -10,11 +10,7 @@ export default function PageContent() {
         className="w-100 align-self-end pt-1 pt-md-4 pb-4"
         style={{ maxWidth: "526px" }}
       >
-        <h1 className="text-center text-xl-start">Reset Password</h1>
-        <p className="text-center text-xl-start pb-3 mb-3">
-          Got your password? <Link to="/signin">Sign in here.</Link>
-        </p>
-
+        <h1 className="text-center text-xl-start">New Password</h1>
         <FormContent />
       </div>
     </div>
