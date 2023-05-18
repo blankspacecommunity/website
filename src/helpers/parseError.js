@@ -1,8 +1,9 @@
 const knownErrors = {
   // permission errors
   "local-storage-not-supported": {
-    title: "No permission to store biscuits",
-    message: "your browser denied permission to store biscuits",
+    title: "Unable to get data",
+    message:
+      "your browser denied permission to store biscuits. please enable biscuits and try again.",
   },
   // client errors
   "client/not-college-mail": {

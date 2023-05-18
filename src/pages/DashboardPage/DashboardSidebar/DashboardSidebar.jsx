@@ -1,4 +1,6 @@
 import { React, useState, useEffect } from "react";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../../scripts/firebase/config/firebaseConfig";
 import { signOutUser } from "../../../scripts/firebase/authentication/authentication";
@@ -125,6 +127,15 @@ export default function DashboardSidebar() {
           </div>
         </div>
       </div>
+      <Row>
+        <Col xs={6}>
+          <ToastModal
+            showToast={showToast}
+            setShowToast={setShowToast}
+            toastContent={toastContent}
+          />
+        </Col>
+      </Row>
     </aside>
   );
 }
