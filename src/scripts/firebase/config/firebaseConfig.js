@@ -8,12 +8,11 @@ import { getDatabase } from "firebase/database";
 const firebaseConfig = {
   apiKey: "AIzaSyDwETmTdbMwXQMftXpYRGWxffpQ4e3IrWE",
   authDomain: "blankspace-backend.firebaseapp.com",
-  databaseURL:
-    "https://blankspace-backend-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL: "https://blankspace-backend-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "blankspace-backend",
   storageBucket: "blankspace-backend.appspot.com",
   messagingSenderId: "519387477713",
-  appId: "1:519387477713:web:7ffc2a4ae0051345b8b7f0",
+  appId: "1:519387477713:web:7ffc2a4ae0051345b8b7f0"
 };
 
 // Initialize Firebase
