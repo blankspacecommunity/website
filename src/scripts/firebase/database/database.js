@@ -98,6 +98,7 @@ const getUserProfileDetails = async (uid) => {
 
 const updateUserProfileDetails = async (uid, data) => {
   // update the user profile details in database
+  try{
   await update(ref(database, `users/${uid}`), data);
 
   // update the user profile details in local storage if possible
@@ -114,6 +115,12 @@ const updateUserProfileDetails = async (uid, data) => {
         })
       );
     }
+  }}
+  catch(error){
+    throw createError(
+      "Local storage is not supported by your browser",
+      "local-storage-not-supported"
+    );
   }
 };
 
