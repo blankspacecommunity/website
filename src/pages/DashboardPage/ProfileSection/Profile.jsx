@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { getUserProfileDetails } from "../../../scripts/firebase/database/database";
+import { getUserProfileDetails, updateUserProfileDetails } from "../../../scripts/firebase/database/database";
 import { auth } from "../../../scripts/firebase/config/firebaseConfig";
 import ToastModal from "../../../components/ToastModal/ToastModal";
 import parseError from "../../../helpers/parseError";
 
 export default function Profile() {
-  const map = {
+  const degreeCourseDetails = {
     "B.Tech": [
       "Chemical Engineering",
       "Civil Engineering",
@@ -33,8 +33,9 @@ export default function Profile() {
   };
 
   const [userDetails, setUserDetails] = useState({});
+  const [selectedCourse, setSelectedCourse] = useState("Computer Science");
   const [selectedDegree, setSelectedDegree] = useState("B.Tech");
-  const [course, setCourse] = useState("Computer Science");
+
 
   const [pageLoaded, setPageLoaded] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -75,9 +76,6 @@ export default function Profile() {
         location: userProfileDetails.data.location,
       });
 
-      console.log("data: ", userProfileDetails);
-
-
     } catch (error) {
       localStorage.removeItem("userProfileDetailsCache");
       toastData = parseError(error.code);
@@ -104,10 +102,22 @@ export default function Profile() {
 
   }, []);
 
-  function submitUserDetails(e){
-    e.preventDefault();
-    console.log(userDetails);
+ const handleUpdateProfile = async (e) => {
+  e.preventDefault();
+  try {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const { uid } = user;
+        updateUserProfileDetails(uid, userDetails);
+      }
+    });
   }
+  catch (error) {
+    toastData = parseError(error.code);
+    setToastContent(toastData);
+    setShowToast(true);
+  }
+ };
 
   return (
     <div className="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
@@ -248,7 +258,9 @@ export default function Profile() {
                 id="degree"
                 className="form-select form-select-lg"
                 required
-                onChange={(e) => setUserDetails({ ...userDetails, degree: e.target.value })}
+                onChange={(e) => {setUserDetails({ ...userDetails, degree: e.target.value });
+              setSelectedDegree(e.target.value);}}
+                value={userDetails.degree}
               >
                 <option value="" disabled>
                   Choose degree
@@ -272,8 +284,8 @@ export default function Profile() {
                 <option value="" disabled>
                   Choose course/program
                 </option>
-                {map[selectedDegree].map((courseOption) => (
-                  <option value="BCA/MCA">{courseOption}</option>
+                {degreeCourseDetails[selectedDegree].map((courseOption) => (
+                  <option key={courseOption} value={courseOption}>{courseOption}</option>
                 ))}
               </select>
             </div>
@@ -377,7 +389,7 @@ export default function Profile() {
         </form>
       </div>
       <div className="d-flex mb-3">
-        <button type="submit" className="btn btn-primary" onClick={submitUserDetails}>
+        <button type="submit" className="btn btn-primary" onClick={handleUpdateProfile}>
           Save changes
         </button>
       </div>
