@@ -174,7 +174,7 @@ export default function Profile() {
           Academic Information
         </h2>
         <p>
-          We don't use your academic information to submit your assignments. Also, admission number and location are not displayed on your profile. But your admission number is mandatory because we use it to verify your identity.
+          No worries, your academic info won&apos;t be used for submitting assignments. Admission number is mandatory for identity verification, Both admission number and location remain confidential on your profile.
         </p>
         <form
           className="needs-validation border-bottom pb-2 pb-lg-4"
@@ -202,7 +202,7 @@ export default function Profile() {
             </div>
             {/* TODO FIX THE DATA */}
             <div className="col-sm-6 mb-4">
-              <label className="form-label fs-base">Admission number<small className="text-muted">(not visible in public profile)</small></label>
+              <label className="form-label fs-base">Admission number{" "}<small className="text-muted">(not visible in public profile)</small></label>
               <input
                 onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
                 value={userDetails.name}
@@ -268,7 +268,8 @@ export default function Profile() {
               </select>
             </div>
             <div className="col-sm-6 mb-4">
-              <label className="form-label fs-base">Location</label>
+              <label className="form-label fs-base">Location
+                {" "}<small className="text-muted">(not visible in public profile)</small></label>
               <input
                 onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
                 value={userDetails.name}
