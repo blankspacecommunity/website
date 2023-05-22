@@ -6,6 +6,7 @@ const LOCAL_CAHE_SCHEMA_VERSION = "1.0.0";
 /*
  * CREATE OBJECT
  * function to create an object
+ * this function is used to return an object with a message and a code
  */
 
 const createObject = (message, code) => ({
@@ -32,16 +33,25 @@ const checkCacheVersion = () => {
 /*
  * GET USER PROFILE DETAILS
  * function to get user profile details from database
+ * Following are the features of this function:
+ * 1. It will check whether local storage is supported by the browser
+ * 2. It will check the cache version before fetching the cached data
+ * 3. It will get the cached data if available
+ * 4. It will fetch the data from firebase database if cached data is not available
+ * 5. It will store the fetched data in local storage if possible
  */
 
 const getUserProfileDetails = async (uid) => {
-  // check whether the browser supports local storage api
   let localStorageAvailable = false;
 
+  // check whether local storage is supported by the browser
   if (typeof Storage !== "undefined") {
     localStorageAvailable = true;
 
-    // check whether the user profile details are cached in local storage
+    // check the cache version before fetching the cached data
+    checkCacheVersion();
+    
+    // get the cached data if available
     const userProfileDetailsCache = localStorage.getItem(
       "userProfileDetailsCache"
     );
@@ -51,14 +61,11 @@ const getUserProfileDetails = async (uid) => {
       return JSON.parse(userProfileDetailsCache);
     }
   } else {
-    // throw an error if local storage is not supported
-    throw createObject(
-      "Local storage is not supported by your browser",
-      "local-storage-not-supported"
-    );
+    // if local storage is not supported, return an object with a message and a code
+    return createObject("Local storage is not supported", "database/local-storage-not-supported");
   }
 
-  // if cached data is not available, fetch it from database
+  // if cached data is not available, fetch it from firebase database
   const snapshot = await get(ref(database, `users/${uid}`));
   const {
     username,
@@ -78,6 +85,8 @@ const getUserProfileDetails = async (uid) => {
     discordProfile,
     githubProfile,
     twitterProfile, } = snapshot.val();
+
+    // create an object with the fetched data
   const userProfileDetails = {
     uid,
     username,
@@ -99,15 +108,18 @@ const getUserProfileDetails = async (uid) => {
     twitterProfile,
   };
 
-  // cache the data in local storage if possible
+  // if local storage is supported, store the fetched data in local storage with additional fields: isCached and version
   if (localStorageAvailable) {
     localStorage.setItem(
       "userProfileDetailsCache",
       JSON.stringify({ data: userProfileDetails, isCached: true, version: LOCAL_CAHE_SCHEMA_VERSION })
     );
   }
+
+  // if everything is successful, return an object with the fetched data and a code
   return { data: userProfileDetails, isCached: false };
 };
+
 
 /*
  * UPDATE USER PROFILE DETAILS
@@ -126,7 +138,7 @@ const updateUserProfileDetails = async (uid, data) => {
       const cachedDataObject = JSON.parse(localStorage.getItem("userProfileDetailsCache")).data;
       const incomingDataObject = data;
 
-      // if there is no change in the data, return an error
+      // if there is no change in the data, return an object with a message and a code
       if(JSON.stringify(cachedDataObject) === JSON.stringify(incomingDataObject)){
         return createObject("No changes detected", "database/no-changes-detected");
       }
@@ -134,7 +146,7 @@ const updateUserProfileDetails = async (uid, data) => {
 
   try{
 
-  // update the user profile details in database
+  // update the user profile details in firebase database
   await update(ref(database, `users/${uid}`), data);
 
   // update the user profile details in local storage if possible
@@ -151,10 +163,14 @@ const updateUserProfileDetails = async (uid, data) => {
     }
   }}
   catch(error){
+    // TODO: is this error handling correct?
     return createObject(error.message, error.code);
   }
 
+  // if everything is successful, return an object with a message and a code
   return createObject("Profile updated successfully", "database/profile-updated");
 };
 
 export { getUserProfileDetails, updateUserProfileDetails };
+
+
