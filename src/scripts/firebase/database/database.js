@@ -42,8 +42,36 @@ const getUserProfileDetails = async (uid) => {
 
   // if cached data is not available, fetch it from database
   const snapshot = await get(ref(database, `users/${uid}`));
-  const { name, email, username, phone, bio } = snapshot.val();
-  const userProfileDetails = { uid, name, email, username, phone, bio };
+  const {
+    name,
+    email,
+    username,
+    phoneNumber,
+    bio,
+    course,
+    degree,
+    discordProfile,
+    githubProfile,
+    linkedinProfile,
+    residentialStatus,
+    twitterProfile,
+    yearOfAdmission } = snapshot.val();
+  const userProfileDetails = {
+    uid,
+    name,
+    email,
+    username,
+    phoneNumber,
+    bio,
+    course,
+    degree,
+    discordProfile,
+    githubProfile,
+    linkedinProfile,
+    residentialStatus,
+    twitterProfile,
+    yearOfAdmission
+  };
 
   // cache the data in local storage if possible
   if (localStorageAvailable) {
