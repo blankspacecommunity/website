@@ -47,6 +47,9 @@ export default function Profile() {
     position: "top-end",
   });
 
+  const currentYear = new Date().getFullYear();
+  const years = [currentYear, currentYear -1 , currentYear - 2, currentYear - 3, currentYear -4];
+
   // get the user details from the database
   const fetchUserDetails = async (uid) => {
     try {
@@ -65,7 +68,7 @@ export default function Profile() {
         linkedinProfile: userProfileDetails.data.linkedinProfile,
         twitterProfile: userProfileDetails.data.twitterProfile,
         residentialStatus: userProfileDetails.data.residentialStatus,
-        yearOfAdmission: userProfileDetails.data.yearOfAdmission || "2023",
+        yearOfAdmission: userProfileDetails.data.yearOfAdmission,
         haveExperience: userProfileDetails.data.haveExperience,
         isLearning: userProfileDetails.data.isLearning,
         admissionNumber: userProfileDetails.data.admissionNumber,
@@ -100,6 +103,11 @@ export default function Profile() {
     }
 
   }, []);
+
+  function submitUserDetails(e){
+    e.preventDefault();
+    console.log(userDetails);
+  }
 
   return (
     <div className="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
@@ -136,7 +144,6 @@ export default function Profile() {
                 type="text"
                 id="phoneNumber"
                 className="form-control form-control-lg"
-                data-format='{"numericOnly": true, "delimiters": ["+1 ", " ", " "], "blocks": [0, 3, 3, 2]}'
                 placeholder=""
               />
             </div>
@@ -214,11 +221,12 @@ export default function Profile() {
                 <option value="" disabled>
                   Choose year
                 </option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-                <option value="2019">2019</option>
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+                
               </select>
             </div>
             <div className="col-sm-6 mb-4">
@@ -369,7 +377,7 @@ export default function Profile() {
         </form>
       </div>
       <div className="d-flex mb-3">
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary" onClick={submitUserDetails}>
           Save changes
         </button>
       </div>
