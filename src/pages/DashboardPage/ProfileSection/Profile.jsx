@@ -32,13 +32,7 @@ export default function Profile() {
     "BCA/MCA": ["MCA (2 years)", "MCA Integrated (5 years)"],
   };
 
-  const [userDetails, setUserDetails] = useState({
-    name: "",
-    email: "",
-    username: "",
-    phoneNumber: "",
-    bio: "",
-  });
+  const [userDetails, setUserDetails] = useState({});
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -77,12 +71,21 @@ export default function Profile() {
         username: userProfileDetails.data.username,
         phoneNumber: userProfileDetails.data.phoneNumber,
         bio: userProfileDetails.data.bio,
+        course: userProfileDetails.data.course,
+        degree: userProfileDetails.data.degree,
+        discordProfile: userProfileDetails.data.discordProfile,
+        githubProfile: userProfileDetails.data.githubProfile,
+        linkedinProfile: userProfileDetails.data.linkedinProfile,
+        twitterProfile: userProfileDetails.data.twitterProfile,
+        residentialStatus: userProfileDetails.data.residentialStatus,
+        yearOfAdmission: userProfileDetails.data.yearOfAdmission,
       });
 
-      console.log(userProfileDetails);
+      console.log("data: ", userProfileDetails);
 
 
     } catch (error) {
+      localStorage.removeItem("userProfileDetailsCache");
       toastData = parseError(error.code);
       setToastContent(toastData);
       setShowToast(true);
@@ -140,7 +143,7 @@ export default function Profile() {
               </label>
               <input
                 onChange={(e) => setUserDetails({ ...userDetails, phoneNumber: e.target.value })}
-                value={phoneNumber}
+                value={userDetails.phoneNumber}
                 type="text"
                 id="phone"
                 className="form-control form-control-lg"
@@ -170,6 +173,9 @@ export default function Profile() {
         <h2 className="h5 text-primary pt-1 pt-lg-3 my-4">
           Academic Information
         </h2>
+        <p>
+          We don't use your academic information to submit your assignments. Also, admission number and location are not displayed on your profile. But your admission number is mandatory because we use it to verify your identity.
+        </p>
         <form
           className="needs-validation border-bottom pb-2 pb-lg-4"
           noValidate
@@ -181,8 +187,8 @@ export default function Profile() {
                 id="country"
                 className="form-select form-select-lg"
                 required
-                onChange={(e) => setYearOfAdmission(e.target.value)}
-                value={yearOfAdmission}
+                onChange={(e) => setUserDetails({ ...userDetails, yearOfAdmission: e.target.value })}
+                value={userDetails.yearOfAdmission}
               >
                 <option value="" disabled>
                   Choose year
@@ -194,15 +200,27 @@ export default function Profile() {
                 <option value="2019">2019</option>
               </select>
             </div>
+            {/* TODO FIX THE DATA */}
+            <div className="col-sm-6 mb-4">
+              <label className="form-label fs-base">Admission number<small className="text-muted">(not visible in public profile)</small></label>
+              <input
+                onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
+                value={userDetails.name}
+                type="number"
+                id="fn"
+                className="form-control form-control-lg"
+                required
+              />
+            </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="state" className="form-label fs-base">
-                Degree name
+                Degree
               </label>
               <select
                 id="state"
                 className="form-select form-select-lg"
                 required
-                onChange={(e) => setSelectedDegree(e.target.value)}
+                onChange={(e) => setUserDetails({ ...userDetails, degree: e.target.value })}
               >
                 <option value="" disabled>
                   Choose degree
@@ -220,8 +238,8 @@ export default function Profile() {
                 id="state"
                 className="form-select form-select-lg"
                 required
-                onChange={(e) => setCourse(e.target.value)}
-                value={course}
+                onChange={(e) => setUserDetails({ ...userDetails, course: e.target.value })}
+                value={userDetails.course}
               >
                 <option value="" disabled>
                   Choose course/program
@@ -239,8 +257,8 @@ export default function Profile() {
                 id="city"
                 className="form-select form-select-lg"
                 required
-                onChange={(e) => setResidentialStatus(e.target.value)}
-                value={residentialStatus}
+                onChange={(e) => setUserDetails({ ...userDetails, residentialStatus: e.target.value })}
+                value={userDetails.residentialStatus}
               >
                 <option value="" disabled>
                   Choose Residential Status
@@ -248,6 +266,17 @@ export default function Profile() {
                 <option value="Boston">Hosteler</option>
                 <option value="Chicago">Day Scholar</option>
               </select>
+            </div>
+            <div className="col-sm-6 mb-4">
+              <label className="form-label fs-base">Location</label>
+              <input
+                onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
+                value={userDetails.name}
+                type="text"
+                id="fn"
+                className="form-control form-control-lg"
+
+              />
             </div>
           </div>
         </form>
@@ -268,8 +297,8 @@ export default function Profile() {
                 LinkedIn
               </label>
               <input
-                onChange={(e) => setLinkedIn(e.target.value)}
-                value={linkedIn}
+                onChange={(e) => setUserDetails({ ...userDetails, linkedinProfile: e.target.value })}
+                value={userDetails.linkedinProfile}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
@@ -281,8 +310,8 @@ export default function Profile() {
                 Discord
               </label>
               <input
-                onChange={(e) => setDiscord(e.target.value)}
-                value={discord}
+                onChange={(e) => setUserDetails({ ...userDetails, discordProfile: e.target.value })}
+                value={userDetails.discordProfile}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
@@ -295,8 +324,8 @@ export default function Profile() {
               </label>
               <input
                 type="text"
-                onChange={(e) => setGithub(e.target.value)}
-                value={github}
+                onChange={(e) => setUserDetails({ ...userDetails, githubProfile: e.target.value })}
+                value={userDetails.githubProfile}
                 id="fn"
                 className="form-control form-control-lg"
                 required
@@ -307,8 +336,8 @@ export default function Profile() {
                 Twitter
               </label>
               <input
-                onChange={(e) => setTwitter(e.target.value)}
-                value={twitter}
+                onChange={(e) => setUserDetails({ ...userDetails, twitterProfile: e.target.value })}
+                value={userDetails.twitterProfile}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
