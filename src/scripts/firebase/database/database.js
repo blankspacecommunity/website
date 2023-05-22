@@ -94,29 +94,33 @@ const getUserProfileDetails = async (uid) => {
 /*
  * UPDATE USER PROFILE DETAILS
  * function to update user profile details in database
+ * Following are the features of this function:
+ * 1. It will update the user profile details in database
+ * 2. It will update the user profile details in local storage if possible
+ * 3. It will check whether there is any change in the data
  */
 
 const updateUserProfileDetails = async (uid, data) => {
-  const cacheIsAvailable = localStorage.getItem("userProfileDetailsCache");
+  const userProfileDetailsCache = localStorage.getItem("userProfileDetailsCache");
 
-
-    if(cacheIsAvailable){
+    // check whether there is any change in the data
+    if(userProfileDetailsCache){
       const cachedDataObject = JSON.parse(localStorage.getItem("userProfileDetailsCache")).data;
       const incomingDataObject = data;
+
+      // if there is no change in the data, return an error
       if(JSON.stringify(cachedDataObject) === JSON.stringify(incomingDataObject)){
-        console.log("No changes detected");
-        return createError("No changes detected", "no-changes-detected");
+        return createError("No changes detected", "database/no-changes-detected");
       }
     }
-  // update the user profile details in database
+
   try{
+
+  // update the user profile details in database
   await update(ref(database, `users/${uid}`), data);
 
   // update the user profile details in local storage if possible
   if (typeof Storage !== "undefined") {
-    const userProfileDetailsCache = localStorage.getItem(
-      "userProfileDetailsCache"
-    );
     if (userProfileDetailsCache) {
       localStorage.setItem(
         "userProfileDetailsCache",
@@ -128,12 +132,10 @@ const updateUserProfileDetails = async (uid, data) => {
     }
   }}
   catch(error){
-    throw createError(
-      "Local storage is not supported by your browser",
-      "local-storage-not-supported"
-    );
+    return createError(error.message, error.code);
   }
-  return { data, isCached: false };
+  
+  return createError("Profile updated successfully", "database/profile-updated");
 };
 
 export { getUserProfileDetails, updateUserProfileDetails };
