@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getUserProfileDetails } from "../../../scripts/firebase/database/database";
 import { auth } from "../../../scripts/firebase/config/firebaseConfig";
-/* 
-  auth.currentUser is an object that contains the following properties:
-  displayName, email, emailVerified, phoneNumber, photoURL, uid, providerData
-*/
-export default function Profile({ userProfileDetails }) {
-  console.log("userProfileDetails", userProfileDetails); // TODO: remove this
+import ToastModal from "../../../components/ToastModal/ToastModal";
+import parseError from "../../../helpers/parseError";
+
+export default function Profile() {
   const map = {
     "B.Tech": [
       "Chemical Engineering",
@@ -34,7 +32,17 @@ export default function Profile({ userProfileDetails }) {
     "BCA/MCA": ["MCA (2 years)", "MCA Integrated (5 years)"],
   };
 
+  const [userDetails, setUserDetails] = useState({
+    name: "",
+    email: "",
+    username: "",
+    phoneNumber: "",
+    bio: "",
+  });
+
   const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [bio, setBio] = useState("");
 
@@ -47,6 +55,59 @@ export default function Profile({ userProfileDetails }) {
   const [github, setGithub] = useState("");
   const [discord, setDiscord] = useState("");
   const [twitter, setTwitter] = useState("");
+  const [pageLoaded, setPageLoaded] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  let toastData = {};
+  const [toastContent, setToastContent] = useState({
+    title: "",
+    code: "",
+    message: "",
+    delay: 0,
+    position: "top-end",
+  });
+
+  // get the user details from the database
+  const fetchUserDetails = async (uid) => {
+    try {
+      const userProfileDetails = await getUserProfileDetails(uid);
+
+      setUserDetails({
+        name: userProfileDetails.data.name,
+        email: userProfileDetails.data.email,
+        username: userProfileDetails.data.username,
+        phoneNumber: userProfileDetails.data.phoneNumber,
+        bio: userProfileDetails.data.bio,
+      });
+
+      console.log(userProfileDetails);
+
+
+    } catch (error) {
+      toastData = parseError(error.code);
+      setToastContent(toastData);
+      setShowToast(true);
+    }
+  };
+
+  console.log("rendering");
+
+  // get the user details from the database when the profile section is active
+  useEffect(() => {
+    console.log("calling useEffect");
+    try {
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          const { uid } = user;
+          fetchUserDetails(uid);
+        }
+      });
+    } catch (error) {
+      toastData = parseError(error.code);
+      setToastContent(toastData);
+      setShowToast(true);
+    }
+
+  }, []);
 
   return (
     <div className="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
@@ -64,24 +125,21 @@ export default function Profile({ userProfileDetails }) {
                 Full name
               </label>
               <input
-                onChange={(e) => setFullName(e.target.value)}
-                value={fullName}
+                onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
+                value={userDetails.name}
                 type="text"
                 id="fn"
                 className="form-control form-control-lg"
                 required
               />
-              <div className="invalid-feedback">
-                Please enter your full name!
-              </div>
             </div>
             <div className="col-sm-6 mb-4">
               <label htmlFor="phone" className="form-label fs-base">
-                Phone{" "}
+                Phone number{" "}
                 <small className="text-muted">(preferably whatsapp 💚)</small>
               </label>
               <input
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={(e) => setUserDetails({ ...userDetails, phoneNumber: e.target.value })}
                 value={phoneNumber}
                 type="text"
                 id="phone"
@@ -98,8 +156,8 @@ export default function Profile({ userProfileDetails }) {
                 </small>
               </label>
               <textarea
-                onChange={(e) => setBio(e.target.value)}
-                value={bio}
+                onChange={(e) => setUserDetails({ ...userDetails, bio: e.target.value })}
+                value={userDetails.bio}
                 id="bio"
                 className="form-control form-control-lg"
                 rows="4"
