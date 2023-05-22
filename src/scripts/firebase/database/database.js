@@ -96,6 +96,25 @@ const getUserProfileDetails = async (uid) => {
  * function to update user profile details in database
  */
 
-const updateUserProfileDetails = async () => { };
+const updateUserProfileDetails = async (uid, data) => {
+  // update the user profile details in database
+  await update(ref(database, `users/${uid}`), data);
+
+  // update the user profile details in local storage if possible
+  if (typeof Storage !== "undefined") {
+    const userProfileDetailsCache = localStorage.getItem(
+      "userProfileDetailsCache"
+    );
+    if (userProfileDetailsCache) {
+      localStorage.setItem(
+        "userProfileDetailsCache",
+        JSON.stringify({
+          data: { ...JSON.parse(userProfileDetailsCache).data, ...data },
+          isCached: true,
+        })
+      );
+    }
+  }
+};
 
 export { getUserProfileDetails, updateUserProfileDetails };
