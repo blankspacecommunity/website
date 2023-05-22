@@ -29,7 +29,7 @@ const getUserProfileDetails = async (uid) => {
     );
 
     // if cached data is available and the uid matches, return the cached data
-    if (userProfileDetailsCache && userProfileDetailsCache.uid === uid) {
+    if (userProfileDetailsCache && userProfileDetailsCache.data.uid === uid) {
       return JSON.parse(userProfileDetailsCache);
     }
   } else {
