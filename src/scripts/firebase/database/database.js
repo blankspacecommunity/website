@@ -97,8 +97,17 @@ const getUserProfileDetails = async (uid) => {
  */
 
 const updateUserProfileDetails = async (uid, data) => {
+  const cacheIsAvailable = localStorage.getItem("userProfileDetailsCache");
 
-  console.log(JSON.stringify(JSON.parse(localStorage.getItem("userProfileDetailsCache")).data));
+
+    if(cacheIsAvailable){
+      const cachedDataObject = JSON.parse(localStorage.getItem("userProfileDetailsCache")).data;
+      const incomingDataObject = data;
+      if(JSON.stringify(cachedDataObject) === JSON.stringify(incomingDataObject)){
+        console.log("No changes detected");
+        return createError("No changes detected", "no-changes-detected");
+      }
+    }
   // update the user profile details in database
   try{
   await update(ref(database, `users/${uid}`), data);
