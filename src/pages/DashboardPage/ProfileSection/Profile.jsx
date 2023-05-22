@@ -33,22 +33,9 @@ export default function Profile() {
   };
 
   const [userDetails, setUserDetails] = useState({});
-
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [bio, setBio] = useState("");
-
-  const [yearOfAdmission, setYearOfAdmission] = useState(2023);
   const [selectedDegree, setSelectedDegree] = useState("B.Tech");
   const [course, setCourse] = useState("Computer Science");
-  const [residentialStatus, setResidentialStatus] = useState("Hosteler");
 
-  const [linkedIn, setLinkedIn] = useState("");
-  const [github, setGithub] = useState("");
-  const [discord, setDiscord] = useState("");
-  const [twitter, setTwitter] = useState("");
   const [pageLoaded, setPageLoaded] = useState(false);
   const [showToast, setShowToast] = useState(false);
   let toastData = {};
@@ -78,7 +65,11 @@ export default function Profile() {
         linkedinProfile: userProfileDetails.data.linkedinProfile,
         twitterProfile: userProfileDetails.data.twitterProfile,
         residentialStatus: userProfileDetails.data.residentialStatus,
-        yearOfAdmission: userProfileDetails.data.yearOfAdmission,
+        yearOfAdmission: userProfileDetails.data.yearOfAdmission || "2023",
+        haveExperience: userProfileDetails.data.haveExperience,
+        isLearning: userProfileDetails.data.isLearning,
+        admissionNumber: userProfileDetails.data.admissionNumber,
+        location: userProfileDetails.data.location,
       });
 
       console.log("data: ", userProfileDetails);
@@ -92,11 +83,9 @@ export default function Profile() {
     }
   };
 
-  console.log("rendering");
-
   // get the user details from the database when the profile section is active
+  // TODO: useEffect is calling twice, fix it
   useEffect(() => {
-    console.log("calling useEffect");
     try {
       auth.onAuthStateChanged((user) => {
         if (user) {
@@ -124,20 +113,20 @@ export default function Profile() {
         >
           <div className="row pb-2">
             <div className="col-sm-6 mb-4">
-              <label htmlFor="fn" className="form-label fs-base">
+              <label htmlFor="name" className="form-label fs-base">
                 Full name
               </label>
               <input
                 onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
                 value={userDetails.name}
                 type="text"
-                id="fn"
+                id="name"
                 className="form-control form-control-lg"
                 required
               />
             </div>
             <div className="col-sm-6 mb-4">
-              <label htmlFor="phone" className="form-label fs-base">
+              <label htmlFor="phoneNumber" className="form-label fs-base">
                 Phone number{" "}
                 <small className="text-muted">(preferably whatsapp 💚)</small>
               </label>
@@ -145,7 +134,7 @@ export default function Profile() {
                 onChange={(e) => setUserDetails({ ...userDetails, phoneNumber: e.target.value })}
                 value={userDetails.phoneNumber}
                 type="text"
-                id="phone"
+                id="phoneNumber"
                 className="form-control form-control-lg"
                 data-format='{"numericOnly": true, "delimiters": ["+1 ", " ", " "], "blocks": [0, 3, 3, 2]}'
                 placeholder=""
@@ -168,35 +157,35 @@ export default function Profile() {
               />
             </div>
             <div className="col-12 mb-4">
-              <label htmlFor="bio" className="form-label fs-base">
+              <label htmlFor="haveExperience" className="form-label fs-base">
                 Languages & tools you have experience in{" "}
                 <small className="text-muted">
                   (seperate with comma)
                 </small>
               </label>
               <textarea
-                onChange={(e) => setUserDetails({ ...userDetails, bio: e.target.value })}
-                value={userDetails.bio}
-                id="bio"
+                onChange={(e) => setUserDetails({ ...userDetails, haveExperience: e.target.value })}
+                value={userDetails.haveExperience}
+                id="haveExperience"
                 className="form-control form-control-lg"
                 rows="4"
-                placeholder="Add a shooooort bio..."
+                placeholder="For example: HTML, CSS, JavaScript, React, Node.js, MongoDB, etc."
               />
             </div>
             <div className="col-12 mb-4">
-              <label htmlFor="bio" className="form-label fs-base">
+              <label htmlFor="isLearning" className="form-label fs-base">
                 Languages & tools you are learning{" "}
                 <small className="text-muted">
                   (seperate with comma)
                 </small>
               </label>
               <textarea
-                onChange={(e) => setUserDetails({ ...userDetails, bio: e.target.value })}
-                value={userDetails.bio}
-                id="bio"
+                onChange={(e) => setUserDetails({ ...userDetails, isLearning: e.target.value })}
+                value={userDetails.isLearning}
+                id="isLearning"
                 className="form-control form-control-lg"
                 rows="4"
-                placeholder="Add a shooooort bio..."
+                placeholder="For example: HTML, CSS, JavaScript, React, Node.js, MongoDB, etc."
               />
             </div>
           </div>
@@ -214,9 +203,9 @@ export default function Profile() {
         >
           <div className="row pb-2">
             <div className="col-sm-6 mb-4">
-              <label className="form-label fs-base">Year of admission</label>
+              <label htmlFor="yearOfAdmission" className="form-label fs-base">Year of admission</label>
               <select
-                id="country"
+                id="yearOfAdmission"
                 className="form-select form-select-lg"
                 required
                 onChange={(e) => setUserDetails({ ...userDetails, yearOfAdmission: e.target.value })}
@@ -232,24 +221,23 @@ export default function Profile() {
                 <option value="2019">2019</option>
               </select>
             </div>
-            {/* TODO FIX THE DATA */}
             <div className="col-sm-6 mb-4">
-              <label className="form-label fs-base">Admission number{" "}<small className="text-muted">(not visible in public profile)</small></label>
+              <label htmlFor="admissionNumber" className="form-label fs-base">Admission number{" "}<small className="text-muted">(not visible in public profile)</small></label>
               <input
-                onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
-                value={userDetails.name}
+                onChange={(e) => setUserDetails({ ...userDetails, admissionNumber: e.target.value })}
+                value={userDetails.admissionNumber}
                 type="number"
-                id="fn"
+                id="admissionNumber"
                 className="form-control form-control-lg"
                 required
               />
             </div>
             <div className="col-sm-6 mb-4">
-              <label htmlFor="state" className="form-label fs-base">
+              <label htmlFor="degree" className="form-label fs-base">
                 Degree
               </label>
               <select
-                id="state"
+                id="degree"
                 className="form-select form-select-lg"
                 required
                 onChange={(e) => setUserDetails({ ...userDetails, degree: e.target.value })}
@@ -263,11 +251,11 @@ export default function Profile() {
               </select>
             </div>
             <div className="col-sm-6 mb-4">
-              <label htmlFor="state" className="form-label fs-base">
+              <label htmlFor="course" className="form-label fs-base">
                 Course/Program
               </label>
               <select
-                id="state"
+                id="course"
                 className="form-select form-select-lg"
                 required
                 onChange={(e) => setUserDetails({ ...userDetails, course: e.target.value })}
@@ -282,11 +270,11 @@ export default function Profile() {
               </select>
             </div>
             <div className="col-sm-6 mb-4">
-              <label htmlFor="city" className="form-label fs-base">
+              <label htmlFor="residentialStatus" className="form-label fs-base">
                 Residential Status
               </label>
               <select
-                id="city"
+                id="residentialStatus"
                 className="form-select form-select-lg"
                 required
                 onChange={(e) => setUserDetails({ ...userDetails, residentialStatus: e.target.value })}
@@ -300,13 +288,13 @@ export default function Profile() {
               </select>
             </div>
             <div className="col-sm-6 mb-4">
-              <label className="form-label fs-base">Location
+              <label htmlFor="location" className="form-label fs-base">Location
                 {" "}<small className="text-muted">(not visible in public profile)</small></label>
               <input
-                onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
-                value={userDetails.name}
+                onChange={(e) => setUserDetails({ ...userDetails, location: e.target.value })}
+                value={userDetails.location}
                 type="text"
-                id="fn"
+                id="location"
                 className="form-control form-control-lg"
 
               />
@@ -326,53 +314,53 @@ export default function Profile() {
         >
           <div className="row pb-2">
             <div className="col-sm-6 mb-4">
-              <label htmlFor="fn" className="form-label fs-base">
+              <label htmlFor="linkedinProfile" className="form-label fs-base">
                 LinkedIn
               </label>
               <input
                 onChange={(e) => setUserDetails({ ...userDetails, linkedinProfile: e.target.value })}
                 value={userDetails.linkedinProfile}
                 type="text"
-                id="fn"
+                id="linkedinProfile"
                 className="form-control form-control-lg"
                 required
               />
             </div>
             <div className="col-sm-6 mb-4">
-              <label htmlFor="fn" className="form-label fs-base">
+              <label htmlFor="discordProfile" className="form-label fs-base">
                 Discord
               </label>
               <input
                 onChange={(e) => setUserDetails({ ...userDetails, discordProfile: e.target.value })}
                 value={userDetails.discordProfile}
                 type="text"
-                id="fn"
+                id="discordProfile"
                 className="form-control form-control-lg"
                 required
               />
             </div>
             <div className="col-sm-6 mb-4">
-              <label htmlFor="fn" className="form-label fs-base">
+              <label htmlFor="githubProfile" className="form-label fs-base">
                 Github
               </label>
               <input
                 type="text"
                 onChange={(e) => setUserDetails({ ...userDetails, githubProfile: e.target.value })}
                 value={userDetails.githubProfile}
-                id="fn"
+                id="githubProfile"
                 className="form-control form-control-lg"
                 required
               />
             </div>
             <div className="col-sm-6 mb-4">
-              <label htmlFor="fn" className="form-label fs-base">
+              <label htmlFor="twitterProfile" className="form-label fs-base">
                 Twitter
               </label>
               <input
                 onChange={(e) => setUserDetails({ ...userDetails, twitterProfile: e.target.value })}
                 value={userDetails.twitterProfile}
                 type="text"
-                id="fn"
+                id="twitterProfile"
                 className="form-control form-control-lg"
                 required
               />
