@@ -43,42 +43,42 @@ const getUserProfileDetails = async (uid) => {
   // if cached data is not available, fetch it from database
   const snapshot = await get(ref(database, `users/${uid}`));
   const {
-    name,
-    email,
     username,
+    email,
+    name,
     phoneNumber,
     bio,
-    course,
-    degree,
-    discordProfile,
-    githubProfile,
-    linkedinProfile,
-    residentialStatus,
-    twitterProfile,
-    yearOfAdmission,
     haveExperience,
     isLearning,
+    yearOfAdmission,
     admissionNumber,
-    location } = snapshot.val();
+    degree,
+    course,
+    residentialStatus,
+    location,
+    linkedinProfile,
+    discordProfile,
+    githubProfile,
+    twitterProfile, } = snapshot.val();
   const userProfileDetails = {
     uid,
-    name,
-    email,
     username,
+    email,
+    name,
     phoneNumber,
     bio,
-    course,
-    degree,
-    discordProfile,
-    githubProfile,
-    linkedinProfile,
-    residentialStatus,
-    twitterProfile,
-    yearOfAdmission,
     haveExperience,
     isLearning,
+    yearOfAdmission,
     admissionNumber,
-    location
+    degree,
+    course,
+    residentialStatus,
+    location,
+    linkedinProfile,
+    discordProfile,
+    githubProfile,
+    twitterProfile,
   };
 
   // cache the data in local storage if possible
@@ -97,6 +97,8 @@ const getUserProfileDetails = async (uid) => {
  */
 
 const updateUserProfileDetails = async (uid, data) => {
+
+  console.log(JSON.stringify(JSON.parse(localStorage.getItem("userProfileDetailsCache")).data));
   // update the user profile details in database
   try{
   await update(ref(database, `users/${uid}`), data);
@@ -122,6 +124,7 @@ const updateUserProfileDetails = async (uid, data) => {
       "local-storage-not-supported"
     );
   }
+  return { data, isCached: false };
 };
 
 export { getUserProfileDetails, updateUserProfileDetails };

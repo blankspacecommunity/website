@@ -57,23 +57,24 @@ export default function Profile() {
       const userProfileDetails = await getUserProfileDetails(uid);
 
       setUserDetails({
-        name: userProfileDetails.data.name,
-        email: userProfileDetails.data.email,
+        uid: userProfileDetails.data.uid,
         username: userProfileDetails.data.username,
+        email: userProfileDetails.data.email,
+        name: userProfileDetails.data.name,
         phoneNumber: userProfileDetails.data.phoneNumber,
         bio: userProfileDetails.data.bio,
-        course: userProfileDetails.data.course,
-        degree: userProfileDetails.data.degree,
-        discordProfile: userProfileDetails.data.discordProfile,
-        githubProfile: userProfileDetails.data.githubProfile,
-        linkedinProfile: userProfileDetails.data.linkedinProfile,
-        twitterProfile: userProfileDetails.data.twitterProfile,
-        residentialStatus: userProfileDetails.data.residentialStatus,
-        yearOfAdmission: userProfileDetails.data.yearOfAdmission,
         haveExperience: userProfileDetails.data.haveExperience,
         isLearning: userProfileDetails.data.isLearning,
+        yearOfAdmission: userProfileDetails.data.yearOfAdmission,
         admissionNumber: userProfileDetails.data.admissionNumber,
+        degree: userProfileDetails.data.degree,
+        course: userProfileDetails.data.course,
+        residentialStatus: userProfileDetails.data.residentialStatus,
         location: userProfileDetails.data.location,
+        linkedinProfile: userProfileDetails.data.linkedinProfile,
+        discordProfile: userProfileDetails.data.discordProfile,
+        githubProfile: userProfileDetails.data.githubProfile,
+        twitterProfile: userProfileDetails.data.twitterProfile,
       });
 
     } catch (error) {
@@ -303,8 +304,8 @@ export default function Profile() {
                 <option value="" disabled>
                   Choose Residential Status
                 </option>
-                <option value="Boston">Hosteler</option>
-                <option value="Chicago">Day Scholar</option>
+                <option value="Hosteler">Hosteler</option>
+                <option value="Day Scholar">Day Scholar</option>
               </select>
             </div>
             <div className="col-sm-6 mb-4">
