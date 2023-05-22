@@ -167,6 +167,38 @@ export default function Profile() {
                 placeholder="Add a shooooort bio..."
               />
             </div>
+            <div className="col-12 mb-4">
+              <label htmlFor="bio" className="form-label fs-base">
+                Languages & tools you have experience in{" "}
+                <small className="text-muted">
+                  (seperate with comma)
+                </small>
+              </label>
+              <textarea
+                onChange={(e) => setUserDetails({ ...userDetails, bio: e.target.value })}
+                value={userDetails.bio}
+                id="bio"
+                className="form-control form-control-lg"
+                rows="4"
+                placeholder="Add a shooooort bio..."
+              />
+            </div>
+            <div className="col-12 mb-4">
+              <label htmlFor="bio" className="form-label fs-base">
+                Languages & tools you are learning{" "}
+                <small className="text-muted">
+                  (seperate with comma)
+                </small>
+              </label>
+              <textarea
+                onChange={(e) => setUserDetails({ ...userDetails, bio: e.target.value })}
+                value={userDetails.bio}
+                id="bio"
+                className="form-control form-control-lg"
+                rows="4"
+                placeholder="Add a shooooort bio..."
+              />
+            </div>
           </div>
         </form>
 
