@@ -35,9 +35,6 @@ export default function Profile() {
   const [userDetails, setUserDetails] = useState({});
   const [selectedCourse, setSelectedCourse] = useState("Computer Science");
   const [selectedDegree, setSelectedDegree] = useState("B.Tech");
-
-
-  const [pageLoaded, setPageLoaded] = useState(false);
   const [showToast, setShowToast] = useState(false);
   let toastData = {};
   const [toastContent, setToastContent] = useState({
@@ -53,36 +50,32 @@ export default function Profile() {
 
   // get the user details from the database
   const fetchUserDetails = async (uid) => {
-    try {
+   
       const userProfileDetails = await getUserProfileDetails(uid);
-
-      setUserDetails({
-        uid: userProfileDetails.data.uid,
-        username: userProfileDetails.data.username,
-        email: userProfileDetails.data.email,
-        name: userProfileDetails.data.name,
-        phoneNumber: userProfileDetails.data.phoneNumber,
-        bio: userProfileDetails.data.bio,
-        haveExperience: userProfileDetails.data.haveExperience,
-        isLearning: userProfileDetails.data.isLearning,
-        yearOfAdmission: userProfileDetails.data.yearOfAdmission,
-        admissionNumber: userProfileDetails.data.admissionNumber,
-        degree: userProfileDetails.data.degree,
-        course: userProfileDetails.data.course,
-        residentialStatus: userProfileDetails.data.residentialStatus,
-        location: userProfileDetails.data.location,
-        linkedinProfile: userProfileDetails.data.linkedinProfile,
-        discordProfile: userProfileDetails.data.discordProfile,
-        githubProfile: userProfileDetails.data.githubProfile,
-        twitterProfile: userProfileDetails.data.twitterProfile,
-      });
-
-    } catch (error) {
-      localStorage.removeItem("userProfileDetailsCache");
-      toastData = parseError(error.code);
-      setToastContent(toastData);
-      setShowToast(true);
-    }
+      if(userProfileDetails.data){
+        setUserDetails({
+          uid: userProfileDetails.data.uid,
+          username: userProfileDetails.data.username,
+          email: userProfileDetails.data.email,
+          name: userProfileDetails.data.name,
+          phoneNumber: userProfileDetails.data.phoneNumber,
+          bio: userProfileDetails.data.bio,
+          haveExperience: userProfileDetails.data.haveExperience,
+          isLearning: userProfileDetails.data.isLearning,
+          yearOfAdmission: userProfileDetails.data.yearOfAdmission,
+          admissionNumber: userProfileDetails.data.admissionNumber,
+          degree: userProfileDetails.data.degree,
+          course: userProfileDetails.data.course,
+          residentialStatus: userProfileDetails.data.residentialStatus,
+          location: userProfileDetails.data.location,
+          linkedinProfile: userProfileDetails.data.linkedinProfile,
+          discordProfile: userProfileDetails.data.discordProfile,
+          githubProfile: userProfileDetails.data.githubProfile,
+          twitterProfile: userProfileDetails.data.twitterProfile,
+        });
+      }else{
+        console.log("No data found");
+      }
   };
 
   // get the user details from the database when the profile section is active
