@@ -1,15 +1,33 @@
 import { getDatabase, ref, update, get } from "firebase/database";
 import { auth, database } from "../config/firebaseConfig";
 
+const LOCAL_CAHE_SCHEMA_VERSION = "1.0.0";
+
 /*
- * CREATE ERROR
- * function to create an error object
+ * CREATE OBJECT
+ * function to create an object
  */
 
-const createError = (message, code) => ({
+const createObject = (message, code) => ({
   message,
   code,
 });
+
+/*
+* CHECK CACHE VERSION
+* function to check the cache version
+* if the cache version is different from the current version, clear the cache
+* this is done to prevent any errors due to schema changes
+* this function will be called before fetching the cached data
+*/ 
+
+const checkCacheVersion = () => {
+  const userProfileDetailsCache = localStorage.getItem("userProfileDetailsCache");
+
+  if (userProfileDetailsCache && JSON.parse(userProfileDetailsCache).version !== LOCAL_CAHE_SCHEMA_VERSION) {
+    localStorage.removeItem("userProfileDetailsCache");
+  }
+};
 
 /*
  * GET USER PROFILE DETAILS
@@ -34,7 +52,7 @@ const getUserProfileDetails = async (uid) => {
     }
   } else {
     // throw an error if local storage is not supported
-    throw createError(
+    throw createObject(
       "Local storage is not supported by your browser",
       "local-storage-not-supported"
     );
@@ -85,7 +103,7 @@ const getUserProfileDetails = async (uid) => {
   if (localStorageAvailable) {
     localStorage.setItem(
       "userProfileDetailsCache",
-      JSON.stringify({ data: userProfileDetails, isCached: true })
+      JSON.stringify({ data: userProfileDetails, isCached: true, version: LOCAL_CAHE_SCHEMA_VERSION })
     );
   }
   return { data: userProfileDetails, isCached: false };
@@ -110,7 +128,7 @@ const updateUserProfileDetails = async (uid, data) => {
 
       // if there is no change in the data, return an error
       if(JSON.stringify(cachedDataObject) === JSON.stringify(incomingDataObject)){
-        return createError("No changes detected", "database/no-changes-detected");
+        return createObject("No changes detected", "database/no-changes-detected");
       }
     }
 
@@ -127,15 +145,16 @@ const updateUserProfileDetails = async (uid, data) => {
         JSON.stringify({
           data: { ...JSON.parse(userProfileDetailsCache).data, ...data },
           isCached: true,
+          version: LOCAL_CAHE_SCHEMA_VERSION,
         })
       );
     }
   }}
   catch(error){
-    return createError(error.message, error.code);
+    return createObject(error.message, error.code);
   }
-  
-  return createError("Profile updated successfully", "database/profile-updated");
+
+  return createObject("Profile updated successfully", "database/profile-updated");
 };
 
 export { getUserProfileDetails, updateUserProfileDetails };
