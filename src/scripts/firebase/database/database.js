@@ -55,7 +55,11 @@ const getUserProfileDetails = async (uid) => {
     linkedinProfile,
     residentialStatus,
     twitterProfile,
-    yearOfAdmission } = snapshot.val();
+    yearOfAdmission,
+    haveExperience,
+    isLearning,
+    admissionNumber,
+    location } = snapshot.val();
   const userProfileDetails = {
     uid,
     name,
@@ -70,7 +74,11 @@ const getUserProfileDetails = async (uid) => {
     linkedinProfile,
     residentialStatus,
     twitterProfile,
-    yearOfAdmission
+    yearOfAdmission,
+    haveExperience,
+    isLearning,
+    admissionNumber,
+    location
   };
 
   // cache the data in local storage if possible
