@@ -28,8 +28,8 @@ const getUserProfileDetails = async (uid) => {
       "userProfileDetailsCache"
     );
 
-    // if cached data is available, return it
-    if (userProfileDetailsCache) {
+    // if cached data is available and the uid matches, return the cached data
+    if (userProfileDetailsCache && userProfileDetailsCache.uid === uid) {
       return JSON.parse(userProfileDetailsCache);
     }
   } else {
@@ -43,7 +43,7 @@ const getUserProfileDetails = async (uid) => {
   // if cached data is not available, fetch it from database
   const snapshot = await get(ref(database, `users/${uid}`));
   const { name, email, username, phone, bio } = snapshot.val();
-  const userProfileDetails = { name, email, username, phone, bio };
+  const userProfileDetails = { uid, name, email, username, phone, bio };
 
   // cache the data in local storage if possible
   if (localStorageAvailable) {
@@ -60,6 +60,6 @@ const getUserProfileDetails = async (uid) => {
  * function to update user profile details in database
  */
 
-const updateUserProfileDetails = async () => {};
+const updateUserProfileDetails = async () => { };
 
 export { getUserProfileDetails, updateUserProfileDetails };
