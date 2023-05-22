@@ -49,10 +49,10 @@ const getUserProfileDetails = async (uid) => {
   if (localStorageAvailable) {
     localStorage.setItem(
       "userProfileDetailsCache",
-      JSON.stringify(userProfileDetails)
+      JSON.stringify({ data: userProfileDetails, isCached: true })
     );
   }
-  return userProfileDetails;
+  return { data: userProfileDetails, isCached: false };
 };
 
 /*
